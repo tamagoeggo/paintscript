@@ -40,8 +40,7 @@ export class DrawingApp{
         canvas.addEventListener("touchend", this.releaseEventHandler);
         canvas.addEventListener("touchcancel", this.cancelEventHandler);
     
-        document.getElementById('clear')
-            .addEventListener("click", this.clearEventHandler);
+        document.getElementById('clear').addEventListener("click", this.clearEventHandler);
     }
 
     // lets user draw on canvas

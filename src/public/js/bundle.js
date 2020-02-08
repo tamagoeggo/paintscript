@@ -75,8 +75,7 @@ var DrawingApp = /** @class */ (function () {
         canvas.addEventListener("touchmove", this.dragEventHandler);
         canvas.addEventListener("touchend", this.releaseEventHandler);
         canvas.addEventListener("touchcancel", this.cancelEventHandler);
-        document.getElementById('clear')
-            .addEventListener("click", this.clearEventHandler);
+        document.getElementById('clear').addEventListener("click", this.clearEventHandler);
     };
     // lets user draw on canvas
     DrawingApp.prototype.redraw = function () {

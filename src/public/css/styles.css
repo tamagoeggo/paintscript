@@ -7,6 +7,13 @@ body{
     height: 100%;
 }
 
+button{
+    border: none;
+    background-color: transparent;
+    outline: none;
+    box-shadow: none;
+}
+
 #drawCanvas{
     /* border: 0.5px black solid !important; */
     background-color: white;
@@ -37,9 +44,37 @@ body{
 .canvas-sidebar{
     background-color: #EFEFEF;
     height: 100%;
-    width: 70px;
+    width: 75px;
     float:left;
     position: fixed;
     z-index: 100;
 }
+
+.button-container{
+    display: flex;
+    justify-content: center;
+}
+
+.hamburger-menu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 75px;
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+.side-buttons{
+    width: 35px;
+    height: 35px;
+    background: #EFEFEF;
+    box-shadow: -3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5);
+    border-radius: 5px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
