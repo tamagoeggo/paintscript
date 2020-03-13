@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var colourwheel_js_1 = require("./colourwheel.js");
 var DrawingApp = /** @class */ (function () {
     function DrawingApp() {
         var _this = this;
@@ -103,8 +104,19 @@ var DrawingApp = /** @class */ (function () {
     return DrawingApp;
 }());
 exports.DrawingApp = DrawingApp;
-// document.onreadystatechange = () => {
-//     new DrawingApp();
-// }
 new DrawingApp();
+// set color in HSV / HSL / RGB / HEX
+colourwheel_js_1.colorWheel.rgb = [255, 128, 64];
+colourwheel_js_1.colorWheel.hsl = [120, 100, 50];
+colourwheel_js_1.colorWheel.hsv = [240, 100, 100];
+colourwheel_js_1.colorWheel.hex = '#888888';
+// get color in HSV / HSL / RGB / HEX
+console.log("hsv:", colourwheel_js_1.colorWheel.hsv[0], colourwheel_js_1.colorWheel.hsv[1], colourwheel_js_1.colorWheel.hsv[2]);
+console.log("hsl:", colourwheel_js_1.colorWheel.hsl[0], colourwheel_js_1.colorWheel.hsl[1], colourwheel_js_1.colorWheel.hsl[2]);
+console.log("rgb:", colourwheel_js_1.colorWheel.rgb[0], colourwheel_js_1.colorWheel.rgb[1], colourwheel_js_1.colorWheel.rgb[2]);
+console.log("hex:", colourwheel_js_1.colorWheel.hex);
+// please call redraw() after changing some appearance properties.
+colourwheel_js_1.colorWheel.wheelDiameter = 400;
+colourwheel_js_1.colorWheel.wheelThickness = 40;
+colourwheel_js_1.colorWheel.redraw();
 //# sourceMappingURL=index.js.map

@@ -50,6 +50,32 @@ button{
     z-index: 100;
 }
 
+.colourpickerwindow{
+    width: 240px;
+    height: 420px;
+    position: fixed;
+    z-index: 102;
+    margin-left: 100px;
+    margin-top: 75px;
+    background: #EFEFEF;
+    border-radius: 3px;
+}
+
+.colourwindowarrowcontainer{
+    position: fixed;
+    z-index: 102;
+    margin-top: 60px;
+    margin-left: 70px;
+}
+
+.colourpickerwindowarrow path{
+    stroke-width: 5;
+    stroke: #EFEFEF;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+
 .button-container{
     display: flex;
     justify-content: center;
@@ -75,6 +101,12 @@ button{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.color-dot{
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
 }
 
 

@@ -16,7 +16,7 @@ app.use('/node_modules', express_1.default.static('node_modules'));
 app.use(express_1.default.static(path_1.default.join(__dirname, '../src/public')));
 // primary app routes
 app.get("/", function (req, res) {
-    res.render("index", { title: "Drawing Board" });
+    res.render("index", { title: "Drawing Board", colordot: "red" });
 });
 exports.default = app;
 //# sourceMappingURL=app.js.map

@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, '../src/public')));
 
 // primary app routes
 app.get("/", function(req, res){
-    res.render("index", {title: "Drawing Board"});
+    res.render("index", {title: "Drawing Board", colordot: "red"});
 });
 
 export default app;

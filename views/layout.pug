@@ -6,11 +6,14 @@ html(lang='')
     title #{title}
     //- link(rel='shortcut icon', href='/images/favicon.png')
     //- script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reinvented-color-wheel@0.2.9/css/reinvented-color-wheel.min.css")
+    script(src="https://cdn.jsdelivr.net/npm/reinvented-color-wheel@0.2.9")
     link(rel='stylesheet', type="text/css", href='css/styles.css')
       
   body
     include partials/sidebar
     include partials/topbar
+    include partials/colourwheel
     .container
       block canvas
   
