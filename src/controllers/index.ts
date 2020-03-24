@@ -53,6 +53,7 @@ export class DrawingApp{
         let clickY = this.clickY;
         for (let i = 0; i < clickX.length; ++i) {
             context.beginPath();
+            context.strokeStyle = colorWheel.hex;
             if (clickDrag[i] && i) {
                 context.moveTo(clickX[i - 1], clickY[i - 1]);
             } else {
@@ -61,7 +62,13 @@ export class DrawingApp{
             context.lineTo(clickX[i], clickY[i]);
             context.stroke();
         }
-        context.closePath();
+
+        if(usedColors.indexOf(colorWheel.hex) == -1){            
+            usedColors.push(colorWheel.hex);
+            console.log("usedColors:", usedColors);
+        }
+
+        context.closePath();        
     }
 
     private addClick(x: number, y: number, dragging: boolean) {
@@ -71,8 +78,7 @@ export class DrawingApp{
     }
     
     private clearEventHandler = () => {
-        this.context
-            .clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.clickX = [];
         this.clickY = [];
         this.clickDrag = [];
@@ -81,6 +87,9 @@ export class DrawingApp{
     private releaseEventHandler = () => {
         this.paint = false;
         this.redraw(); // final redraw call
+        this.clickX = [];
+        this.clickY = [];
+        this.clickDrag = [];
     }
     
     private cancelEventHandler = () => {
@@ -122,21 +131,9 @@ export class DrawingApp{
     }
 }
 
+// color history
+let usedColors: string[] = [];
+
 new DrawingApp();
 
- // set color in HSV / HSL / RGB / HEX
- colorWheel.rgb = [255, 128, 64];
- colorWheel.hsl = [120, 100, 50];
- colorWheel.hsv = [240, 100, 100];
- colorWheel.hex = '#888888';
- 
- // get color in HSV / HSL / RGB / HEX
- console.log("hsv:", colorWheel.hsv[0], colorWheel.hsv[1], colorWheel.hsv[2]);
- console.log("hsl:", colorWheel.hsl[0], colorWheel.hsl[1], colorWheel.hsl[2]);
- console.log("rgb:", colorWheel.rgb[0], colorWheel.rgb[1], colorWheel.rgb[2]);
- console.log("hex:", colorWheel.hex);
- 
- // please call redraw() after changing some appearance properties.
- colorWheel.wheelDiameter = 400;
- colorWheel.wheelThickness = 40;
- colorWheel.redraw();
+document.getElementById('historycontainer');

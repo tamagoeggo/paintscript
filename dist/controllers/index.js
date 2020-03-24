@@ -8,8 +8,7 @@ var DrawingApp = /** @class */ (function () {
         this.clickY = [];
         this.clickDrag = [];
         this.clearEventHandler = function () {
-            _this.context
-                .clearRect(0, 0, _this.canvas.width, _this.canvas.height);
+            _this.context.clearRect(0, 0, _this.canvas.width, _this.canvas.height);
             _this.clickX = [];
             _this.clickY = [];
             _this.clickDrag = [];
@@ -17,6 +16,9 @@ var DrawingApp = /** @class */ (function () {
         this.releaseEventHandler = function () {
             _this.paint = false;
             _this.redraw(); // final redraw call
+            _this.clickX = [];
+            _this.clickY = [];
+            _this.clickDrag = [];
         };
         this.cancelEventHandler = function () {
             _this.paint = false;
@@ -85,6 +87,7 @@ var DrawingApp = /** @class */ (function () {
         var clickY = this.clickY;
         for (var i = 0; i < clickX.length; ++i) {
             context.beginPath();
+            context.strokeStyle = colourwheel_js_1.colorWheel.hex;
             if (clickDrag[i] && i) {
                 context.moveTo(clickX[i - 1], clickY[i - 1]);
             }
@@ -93,6 +96,10 @@ var DrawingApp = /** @class */ (function () {
             }
             context.lineTo(clickX[i], clickY[i]);
             context.stroke();
+        }
+        if (usedColors.indexOf(colourwheel_js_1.colorWheel.hex) == -1) {
+            usedColors.push(colourwheel_js_1.colorWheel.hex);
+            console.log("usedColors:", usedColors);
         }
         context.closePath();
     };
@@ -104,19 +111,8 @@ var DrawingApp = /** @class */ (function () {
     return DrawingApp;
 }());
 exports.DrawingApp = DrawingApp;
+// color history
+var usedColors = [];
 new DrawingApp();
-// set color in HSV / HSL / RGB / HEX
-colourwheel_js_1.colorWheel.rgb = [255, 128, 64];
-colourwheel_js_1.colorWheel.hsl = [120, 100, 50];
-colourwheel_js_1.colorWheel.hsv = [240, 100, 100];
-colourwheel_js_1.colorWheel.hex = '#888888';
-// get color in HSV / HSL / RGB / HEX
-console.log("hsv:", colourwheel_js_1.colorWheel.hsv[0], colourwheel_js_1.colorWheel.hsv[1], colourwheel_js_1.colorWheel.hsv[2]);
-console.log("hsl:", colourwheel_js_1.colorWheel.hsl[0], colourwheel_js_1.colorWheel.hsl[1], colourwheel_js_1.colorWheel.hsl[2]);
-console.log("rgb:", colourwheel_js_1.colorWheel.rgb[0], colourwheel_js_1.colorWheel.rgb[1], colourwheel_js_1.colorWheel.rgb[2]);
-console.log("hex:", colourwheel_js_1.colorWheel.hex);
-// please call redraw() after changing some appearance properties.
-colourwheel_js_1.colorWheel.wheelDiameter = 400;
-colourwheel_js_1.colorWheel.wheelThickness = 40;
-colourwheel_js_1.colorWheel.redraw();
+document.getElementById('historycontainer');
 //# sourceMappingURL=index.js.map

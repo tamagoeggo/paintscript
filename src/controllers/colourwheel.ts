@@ -15,13 +15,13 @@ export var colorWheel = new ReinventedColorWheel({
   
     // appearance
     wheelDiameter: 200,
-    wheelThickness: 20,
-    handleDiameter: 16,
-    wheelReflectsSaturation: true,
+    wheelThickness: 30,
+    handleDiameter: 26,
+    wheelReflectsSaturation: true,    
   
     // handler
     onChange: function (color) {
       // the only argument is the ReinventedColorWheel instance itself.
-      // console.log("hsv:", color.hsv[0], color.hsv[1], color.hsv[2]);
+      console.log("hsv:", color.hsv[0], color.hsv[1], color.hsv[2]);
     },
 });

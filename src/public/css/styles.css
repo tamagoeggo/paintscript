@@ -75,6 +75,36 @@ button{
     stroke-linecap: round;
 }
 
+.colors-text{
+    font-family: 'Noto Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #747474;
+    margin-left: 15px;
+}
+
+#colourpickercontainer{
+    text-align: center;
+}
+
+.history-text{
+    font-family: 'Noto Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: #747474;
+    margin-left: 25px;
+}
+
+#historycontainer{
+    width: 190px;
+    height: 95px;
+    margin: auto;
+    border: red 1px solid;
+}
 
 .button-container{
     display: flex;
@@ -108,5 +138,4 @@ button{
     width: 20px;
     border-radius: 50%;
 }
-
 

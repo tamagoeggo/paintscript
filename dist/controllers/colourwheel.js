@@ -16,13 +16,13 @@ exports.colorWheel = new reinvented_color_wheel_1.default({
     // hex: "#ff0000",
     // appearance
     wheelDiameter: 200,
-    wheelThickness: 20,
-    handleDiameter: 16,
+    wheelThickness: 30,
+    handleDiameter: 26,
     wheelReflectsSaturation: true,
     // handler
     onChange: function (color) {
         // the only argument is the ReinventedColorWheel instance itself.
-        // console.log("hsv:", color.hsv[0], color.hsv[1], color.hsv[2]);
+        console.log("hsv:", color.hsv[0], color.hsv[1], color.hsv[2]);
     },
 });
 //# sourceMappingURL=colourwheel.js.map
