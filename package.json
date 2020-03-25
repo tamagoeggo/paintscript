@@ -7,11 +7,12 @@
     "test": "echo \"Error: no tests installed\" && exit 1",
     "watch-js": "watchify dist/controllers/index.js -o src/public/js/bundle.js -dv",
     "watch": "npm run watch-js",
+    "build-ts": "tsc",
     "build-js": "browserify dist/controllers/index.js -g browserify-css -o src/public/js/bundle.js",    
-    "build": "tsc && npm run build-js",
+    "build": "build-ts && npm run build-js",
     "start": "node dist/server.js",
     "prestart": "npm run build",
-    "postinstall": "npm run tsc"
+    "postinstall": "npm run build-ts"
   },
   "engines": {
     "node": "10.16.3"
