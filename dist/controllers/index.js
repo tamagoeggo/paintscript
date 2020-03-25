@@ -39,6 +39,7 @@ var DrawingApp = /** @class */ (function () {
             _this.paint = true;
             _this.addClick(mouseX, mouseY, false);
             _this.redraw();
+            document.getElementById('colourwindow').style.display = 'none';
         };
         // moving of cursor/touch while in down state
         this.dragEventHandler = function (e) {
@@ -152,11 +153,11 @@ function getColorFromHistory() {
 function toggleColorWindow() {
     document.getElementById('color-button').addEventListener('click', function () {
         var colorWindow = document.getElementById("colourwindow");
-        if (colorWindow.style.display === "none") {
-            colorWindow.style.display = "block";
+        if (colorWindow.style.display !== 'none') {
+            colorWindow.style.display = 'none';
         }
         else {
-            colorWindow.style.display = "none";
+            colorWindow.style.display = 'block';
         }
     });
 }

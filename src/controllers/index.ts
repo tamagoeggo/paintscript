@@ -113,6 +113,7 @@ export class DrawingApp{
         this.paint = true;
         this.addClick(mouseX, mouseY, false);
         this.redraw();
+        document.getElementById('colourwindow').style.display = 'none'; 
     }
 
     // moving of cursor/touch while in down state
@@ -175,10 +176,11 @@ function getColorFromHistory(){
 function toggleColorWindow(){
     document.getElementById('color-button').addEventListener('click', () => {
         let colorWindow = document.getElementById("colourwindow");
-        if (colorWindow.style.display === "none") {
-            colorWindow.style.display = "block";
-        } else {
-            colorWindow.style.display = "none";
+        if (colorWindow.style.display !== 'none') {
+            colorWindow.style.display = 'none';
+        }
+        else {
+            colorWindow.style.display = 'block';
         }
     });
 } 

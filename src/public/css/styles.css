@@ -51,7 +51,7 @@ button{
 }
 
 #colourwindow{
-    display: none;
+    display: block;
 }
 
 .colourpickerwindow{
