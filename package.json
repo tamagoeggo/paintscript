@@ -22,6 +22,7 @@
   "dependencies": {
     "@types/express": "^4.17.2",
     "@types/socket.io": "^2.1.4",
+    "browserify": "^16.5.0",
     "browserify-css": "^0.15.0",
     "commonjs": "0.0.1",
     "core-js": "^3.6.4",
