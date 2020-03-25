@@ -2,7 +2,7 @@
   "name": "drawing-app",
   "version": "1.0.0",
   "description": "An online drawing application",
-  "main": "dist/index.js",
+  "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no tests installed\" && exit 1",
     "watch-js": "watchify dist/controllers/index.js -o src/public/js/bundle.js -dv",
@@ -10,9 +10,11 @@
     "build-js": "browserify dist/controllers/index.js -g browserify-css -o src/public/js/bundle.js",    
     "build": "tsc && npm run build-js",
     "start": "node dist/server.js",
-    "tsc": "tsc",
-    "postinstall": "npm run build",
-    "prestart": "npm run build"
+    "prestart": "npm run build",
+    "postinstall": "npm run tsc"
+  },
+  "engines": {
+    "node": "10.16.3"
   },
   "author": "",
   "license": "ISC",
