@@ -64,7 +64,7 @@ export class DrawingApp{
         }
 
         if(usedColors.indexOf(colorWheel.hex) == -1){            
-            usedColors.push(colorWheel.hex);
+            usedColors.unshift(colorWheel.hex);
             console.log("usedColors:", usedColors);
         }
 
@@ -90,6 +90,9 @@ export class DrawingApp{
         this.clickX = [];
         this.clickY = [];
         this.clickDrag = [];
+        removeUsedColors();
+        generateUsedColors(usedColors);
+        getColorFromHistory();
     }
     
     private cancelEventHandler = () => {
@@ -132,8 +135,41 @@ export class DrawingApp{
 }
 
 // color history
+
 let usedColors: string[] = [];
 
-new DrawingApp();
+function generateUsedColors(usedColors: string[]) {
+    // default text can be removed 
+    if (usedColors.length == 1){
+        let noColorsInHistory = document.getElementById('noColorsInHistory');
+        noColorsInHistory.parentNode.removeChild(noColorsInHistory);
+    }
 
-document.getElementById('historycontainer');
+    while (usedColors.length > 32) {
+        usedColors.splice(-1,1);
+    }
+
+    for (let color of usedColors) {
+        let usedColor = document.createElement('button');
+        usedColor.className = "colorblock";
+        usedColor.style.cssText = "width: 23px; height: 23px; background-color: " + color;
+        document.getElementById('historycontainer').append(usedColor);
+    }
+}
+
+function removeUsedColors() {
+    let colorBlock = document.getElementsByClassName('colorblock');
+    while(colorBlock[0]) {
+        colorBlock[0].parentNode.removeChild(colorBlock[0]);
+    }​
+}
+
+function getColorFromHistory(){
+    for (let i = 0; i < document.getElementsByClassName('colorblock').length; i++) {        
+        document.getElementsByClassName('colorblock')[i].addEventListener("click", (e) => {
+            colorWheel.hex = usedColors[i];        
+        });
+    }
+}
+
+new DrawingApp();

@@ -49,6 +49,9 @@ var DrawingApp = /** @class */ (function () {
             _this.clickX = [];
             _this.clickY = [];
             _this.clickDrag = [];
+            removeUsedColors();
+            generateUsedColors(usedColors);
+            getColorFromHistory();
         };
         this.cancelEventHandler = function () {
             _this.paint = false;
@@ -128,7 +131,7 @@ var DrawingApp = /** @class */ (function () {
             context.stroke();
         }
         if (usedColors.indexOf(colourwheel_js_1.colorWheel.hex) == -1) {
-            usedColors.push(colourwheel_js_1.colorWheel.hex);
+            usedColors.unshift(colourwheel_js_1.colorWheel.hex);
             console.log("usedColors:", usedColors);
         }
         context.closePath();
@@ -143,8 +146,40 @@ var DrawingApp = /** @class */ (function () {
 exports.DrawingApp = DrawingApp;
 // color history
 var usedColors = [];
+function generateUsedColors(usedColors) {
+    // default text can be removed 
+    if (usedColors.length == 1) {
+        var noColorsInHistory = document.getElementById('noColorsInHistory');
+        noColorsInHistory.parentNode.removeChild(noColorsInHistory);
+    }
+    while (usedColors.length > 32) {
+        usedColors.splice(-1, 1);
+    }
+    for (var _i = 0, usedColors_1 = usedColors; _i < usedColors_1.length; _i++) {
+        var color = usedColors_1[_i];
+        var usedColor = document.createElement('button');
+        usedColor.className = "colorblock";
+        usedColor.style.cssText = "width: 23px; height: 23px; background-color: " + color;
+        document.getElementById('historycontainer').append(usedColor);
+    }
+}
+function removeUsedColors() {
+    var colorBlock = document.getElementsByClassName('colorblock');
+    while (colorBlock[0]) {
+        colorBlock[0].parentNode.removeChild(colorBlock[0]);
+    }
+}
+function getColorFromHistory() {
+    var _loop_1 = function (i) {
+        document.getElementsByClassName('colorblock')[i].addEventListener("click", function (e) {
+            colourwheel_js_1.colorWheel.hex = usedColors[i];
+        });
+    };
+    for (var i = 0; i < document.getElementsByClassName('colorblock').length; i++) {
+        _loop_1(i);
+    }
+}
 new DrawingApp();
-document.getElementById('historycontainer');
 
 },{"./colourwheel.js":1}],3:[function(require,module,exports){
 'use strict';
