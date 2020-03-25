@@ -172,4 +172,17 @@ function getColorFromHistory(){
     }
 }
 
+function toggleColorWindow(){
+    document.getElementById('color-button').addEventListener('click', () => {
+        let colorWindow = document.getElementById("colourwindow");
+        if (colorWindow.style.display === "none") {
+            colorWindow.style.display = "block";
+        } else {
+            colorWindow.style.display = "none";
+        }
+    });
+} 
+
+toggleColorWindow();
+
 new DrawingApp();

@@ -179,6 +179,18 @@ function getColorFromHistory() {
         _loop_1(i);
     }
 }
+function toggleColorWindow() {
+    document.getElementById('color-button').addEventListener('click', function () {
+        var colorWindow = document.getElementById("colourwindow");
+        if (colorWindow.style.display === "none") {
+            colorWindow.style.display = "block";
+        }
+        else {
+            colorWindow.style.display = "none";
+        }
+    });
+}
+toggleColorWindow();
 new DrawingApp();
 
 },{"./colourwheel.js":1}],3:[function(require,module,exports){

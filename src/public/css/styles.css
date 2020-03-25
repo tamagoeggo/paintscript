@@ -50,6 +50,10 @@ button{
     z-index: 100;
 }
 
+#colourwindow{
+    display: none;
+}
+
 .colourpickerwindow{
     width: 240px;
     height: 420px;
