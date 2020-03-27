@@ -43,9 +43,15 @@ function toggleColorWindow() {
         var colorWindow = document.getElementById("colourwindow");
         if (colorWindow.style.display !== 'none') {
             colorWindow.style.display = 'none';
+            document.getElementById('color-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
         }
         else {
+            var openWindows = document.getElementsByClassName("side-window");
+            for (var i = 0; i < openWindows.length; i++) {
+                openWindows[i].style.display = 'none';
+            }
             colorWindow.style.display = 'block';
+            document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
         }
     });
 }

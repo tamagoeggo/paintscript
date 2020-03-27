@@ -98,6 +98,15 @@ button{
     align-items: center;
 }
 
+.side-buttons:active{
+    background: #EFEFEF !important;
+    box-shadow: inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5);
+}
+
+.side-buttons:hover{
+    background: #FFFFFF;
+}
+
 .color-dot{
     height: 20px;
     width: 20px;

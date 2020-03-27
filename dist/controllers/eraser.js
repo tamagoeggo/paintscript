@@ -5,9 +5,15 @@ function toggleEraserWindow() {
         var eraserwindow = document.getElementById("eraserwindow");
         if (eraserwindow.style.display !== 'none') {
             eraserwindow.style.display = 'none';
+            document.getElementById('eraser-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
         }
         else {
+            var openWindows = document.getElementsByClassName("side-window");
+            for (var i = 0; i < openWindows.length; i++) {
+                openWindows[i].style.display = 'none';
+            }
             eraserwindow.style.display = 'block';
+            document.getElementById('eraser-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
         }
     });
 }

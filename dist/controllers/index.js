@@ -48,7 +48,7 @@ var DrawingApp = /** @class */ (function () {
             _this.paint = true;
             _this.addClick(mouseX, mouseY, false);
             _this.redraw();
-            document.getElementById('colourwindow').style.display = 'none';
+            closeOpenWindows();
         };
         // moving of cursor/touch while in down state
         this.dragEventHandler = function (e) {
@@ -124,8 +124,15 @@ var DrawingApp = /** @class */ (function () {
     return DrawingApp;
 }());
 exports.DrawingApp = DrawingApp;
+// Toggle 
 colors.toggleColorWindow();
 document.getElementById("eraserwindow").style.display = 'none';
 eraser.toggleEraserWindow();
+function closeOpenWindows() {
+    var openWindows = document.getElementsByClassName("side-window");
+    for (var i = 0; i < openWindows.length; i++) {
+        openWindows[i].style.display = 'none';
+    }
+}
 new DrawingApp();
 //# sourceMappingURL=index.js.map

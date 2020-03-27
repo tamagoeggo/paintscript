@@ -44,9 +44,15 @@ function toggleColorWindow() {
         var colorWindow = document.getElementById("colourwindow");
         if (colorWindow.style.display !== 'none') {
             colorWindow.style.display = 'none';
+            document.getElementById('color-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
         }
         else {
+            var openWindows = document.getElementsByClassName("side-window");
+            for (var i = 0; i < openWindows.length; i++) {
+                openWindows[i].style.display = 'none';
+            }
             colorWindow.style.display = 'block';
+            document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
         }
     });
 }
@@ -89,9 +95,15 @@ function toggleEraserWindow() {
         var eraserwindow = document.getElementById("eraserwindow");
         if (eraserwindow.style.display !== 'none') {
             eraserwindow.style.display = 'none';
+            document.getElementById('eraser-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
         }
         else {
+            var openWindows = document.getElementsByClassName("side-window");
+            for (var i = 0; i < openWindows.length; i++) {
+                openWindows[i].style.display = 'none';
+            }
             eraserwindow.style.display = 'block';
+            document.getElementById('eraser-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
         }
     });
 }
@@ -148,7 +160,7 @@ var DrawingApp = /** @class */ (function () {
             _this.paint = true;
             _this.addClick(mouseX, mouseY, false);
             _this.redraw();
-            document.getElementById('colourwindow').style.display = 'none';
+            closeOpenWindows();
         };
         // moving of cursor/touch while in down state
         this.dragEventHandler = function (e) {
@@ -224,9 +236,16 @@ var DrawingApp = /** @class */ (function () {
     return DrawingApp;
 }());
 exports.DrawingApp = DrawingApp;
+// Toggle 
 colors.toggleColorWindow();
 document.getElementById("eraserwindow").style.display = 'none';
 eraser.toggleEraserWindow();
+function closeOpenWindows() {
+    var openWindows = document.getElementsByClassName("side-window");
+    for (var i = 0; i < openWindows.length; i++) {
+        openWindows[i].style.display = 'none';
+    }
+}
 new DrawingApp();
 
 },{"./colors.js":1,"./colorwheel.js":2,"./eraser.js":3}],5:[function(require,module,exports){
