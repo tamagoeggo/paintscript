@@ -50,6 +50,10 @@ function toggleColorWindow() {
             for (var i = 0; i < openWindows.length; i++) {
                 openWindows[i].style.display = 'none';
             }
+            var pressedButtons = document.getElementsByClassName('side-buttons');
+            for (var i = 0; i < pressedButtons.length; i++) {
+                pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+            }
             colorWindow.style.display = 'block';
             document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
         }
