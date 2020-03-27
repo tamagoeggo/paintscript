@@ -1,6 +1,15 @@
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var colourwheel_js_1 = require("./colourwheel.js");
+var colorwheel_js_1 = require("./colorwheel.js");
+var colors = __importStar(require("./colors.js"));
+var eraser = __importStar(require("./eraser.js"));
 var DrawingApp = /** @class */ (function () {
     function DrawingApp() {
         var _this = this;
@@ -19,9 +28,9 @@ var DrawingApp = /** @class */ (function () {
             _this.clickX = [];
             _this.clickY = [];
             _this.clickDrag = [];
-            removeUsedColors();
-            generateUsedColors(usedColors);
-            getColorFromHistory();
+            colors.removeUsedColors();
+            colors.generateUsedColors(colors.usedColors);
+            colors.getColorFromHistory();
         };
         this.cancelEventHandler = function () {
             _this.paint = false;
@@ -91,7 +100,7 @@ var DrawingApp = /** @class */ (function () {
         var clickY = this.clickY;
         for (var i = 0; i < clickX.length; ++i) {
             context.beginPath();
-            context.strokeStyle = colourwheel_js_1.colorWheel.hex;
+            context.strokeStyle = colorwheel_js_1.colorWheel.hex;
             if (clickDrag[i] && i) {
                 context.moveTo(clickX[i - 1], clickY[i - 1]);
             }
@@ -101,9 +110,9 @@ var DrawingApp = /** @class */ (function () {
             context.lineTo(clickX[i], clickY[i]);
             context.stroke();
         }
-        if (usedColors.indexOf(colourwheel_js_1.colorWheel.hex) == -1) {
-            usedColors.unshift(colourwheel_js_1.colorWheel.hex);
-            console.log("usedColors:", usedColors);
+        if (colors.usedColors.indexOf(colorwheel_js_1.colorWheel.hex) == -1) {
+            colors.usedColors.unshift(colorwheel_js_1.colorWheel.hex);
+            console.log("usedColors:", colors.usedColors);
         }
         context.closePath();
     };
@@ -115,52 +124,8 @@ var DrawingApp = /** @class */ (function () {
     return DrawingApp;
 }());
 exports.DrawingApp = DrawingApp;
-// color history
-var usedColors = [];
-function generateUsedColors(usedColors) {
-    // default text can be removed 
-    if (usedColors.length == 1) {
-        var noColorsInHistory = document.getElementById('noColorsInHistory');
-        noColorsInHistory.parentNode.removeChild(noColorsInHistory);
-    }
-    while (usedColors.length > 32) {
-        usedColors.splice(-1, 1);
-    }
-    for (var _i = 0, usedColors_1 = usedColors; _i < usedColors_1.length; _i++) {
-        var color = usedColors_1[_i];
-        var usedColor = document.createElement('button');
-        usedColor.className = "colorblock";
-        usedColor.style.cssText = "width: 23px; height: 23px; background-color: " + color;
-        document.getElementById('historycontainer').append(usedColor);
-    }
-}
-function removeUsedColors() {
-    var colorBlock = document.getElementsByClassName('colorblock');
-    while (colorBlock[0]) {
-        colorBlock[0].parentNode.removeChild(colorBlock[0]);
-    }
-}
-function getColorFromHistory() {
-    var _loop_1 = function (i) {
-        document.getElementsByClassName('colorblock')[i].addEventListener("click", function (e) {
-            colourwheel_js_1.colorWheel.hex = usedColors[i];
-        });
-    };
-    for (var i = 0; i < document.getElementsByClassName('colorblock').length; i++) {
-        _loop_1(i);
-    }
-}
-function toggleColorWindow() {
-    document.getElementById('color-button').addEventListener('click', function () {
-        var colorWindow = document.getElementById("colourwindow");
-        if (colorWindow.style.display !== 'none') {
-            colorWindow.style.display = 'none';
-        }
-        else {
-            colorWindow.style.display = 'block';
-        }
-    });
-}
-toggleColorWindow();
+colors.toggleColorWindow();
+document.getElementById("eraserwindow").style.display = 'none';
+eraser.toggleEraserWindow();
 new DrawingApp();
 //# sourceMappingURL=index.js.map

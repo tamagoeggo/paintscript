@@ -1,4 +1,6 @@
-import { colorWheel } from "./colourwheel.js";
+import { colorWheel } from "./colorwheel.js";
+import * as colors from "./colors.js";
+import * as eraser from "./eraser.js";
 
 export class DrawingApp{
     private canvas: HTMLCanvasElement;
@@ -63,9 +65,9 @@ export class DrawingApp{
             context.stroke();
         }
 
-        if(usedColors.indexOf(colorWheel.hex) == -1){            
-            usedColors.unshift(colorWheel.hex);
-            console.log("usedColors:", usedColors);
+        if(colors.usedColors.indexOf(colorWheel.hex) == -1){            
+            colors.usedColors.unshift(colorWheel.hex);
+            console.log("usedColors:", colors.usedColors);
         }
 
         context.closePath();        
@@ -90,9 +92,9 @@ export class DrawingApp{
         this.clickX = [];
         this.clickY = [];
         this.clickDrag = [];
-        removeUsedColors();
-        generateUsedColors(usedColors);
-        getColorFromHistory();
+        colors.removeUsedColors();
+        colors.generateUsedColors(colors.usedColors);
+        colors.getColorFromHistory();
     }
     
     private cancelEventHandler = () => {
@@ -135,56 +137,10 @@ export class DrawingApp{
     }
 }
 
-// color history
+colors.toggleColorWindow();
 
-let usedColors: string[] = [];
-
-function generateUsedColors(usedColors: string[]) {
-    // default text can be removed 
-    if (usedColors.length == 1){
-        let noColorsInHistory = document.getElementById('noColorsInHistory');
-        noColorsInHistory.parentNode.removeChild(noColorsInHistory);
-    }
-
-    while (usedColors.length > 32) {
-        usedColors.splice(-1,1);
-    }
-
-    for (let color of usedColors) {
-        let usedColor = document.createElement('button');
-        usedColor.className = "colorblock";
-        usedColor.style.cssText = "width: 23px; height: 23px; background-color: " + color;
-        document.getElementById('historycontainer').append(usedColor);
-    }
-}
-
-function removeUsedColors() {
-    let colorBlock = document.getElementsByClassName('colorblock');
-    while(colorBlock[0]) {
-        colorBlock[0].parentNode.removeChild(colorBlock[0]);
-    }​
-}
-
-function getColorFromHistory(){
-    for (let i = 0; i < document.getElementsByClassName('colorblock').length; i++) {        
-        document.getElementsByClassName('colorblock')[i].addEventListener("click", (e) => {
-            colorWheel.hex = usedColors[i];        
-        });
-    }
-}
-
-function toggleColorWindow(){
-    document.getElementById('color-button').addEventListener('click', () => {
-        let colorWindow = document.getElementById("colourwindow");
-        if (colorWindow.style.display !== 'none') {
-            colorWindow.style.display = 'none';
-        }
-        else {
-            colorWindow.style.display = 'block';
-        }
-    });
-} 
-
-toggleColorWindow();
+document.getElementById("eraserwindow").style.display = 'none';
+eraser.toggleEraserWindow();
 
 new DrawingApp();
+

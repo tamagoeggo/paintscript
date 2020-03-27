@@ -32,6 +32,8 @@ button{
     justify-content: center;
 }
 
+/* ========================== Topbar ========================== */
+
 .canvas-topbar{
     background-color: #F6F6F6;
     width: 100%;
@@ -39,7 +41,26 @@ button{
     position: fixed; 
     top: 0;
     z-index: 99;
+    text-align: right;
 }
+
+#redo{
+    margin-right: 50px;
+}
+
+.undo-redo{
+    width: 30px;
+    height: 30px;
+    background: #F6F6F6;
+    box-shadow: -3px -3px 8px #FFFFFF, 3px 3px 8px rgba(209, 209, 209, 0.5);
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 15px;
+    margin-right: 10px;
+    padding-top: 3px;
+}
+
+/* ========================== Sidebar ========================== */
 
 .canvas-sidebar{
     background-color: #EFEFEF;
@@ -49,6 +70,41 @@ button{
     position: fixed;
     z-index: 100;
 }
+
+.button-container{
+    display: flex;
+    justify-content: center;
+}
+
+.hamburger-menu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 75px;
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+.side-buttons{
+    width: 35px;
+    height: 35px;
+    background: #EFEFEF;
+    box-shadow: -3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5);
+    border-radius: 5px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.color-dot{
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+}
+
+/* ========================== Color window ========================== */
 
 #colourwindow{
     display: block;
@@ -79,7 +135,7 @@ button{
     stroke-linecap: round;
 }
 
-.colours-text{
+.colours-text, .eraser-text{
     font-family: 'Noto Sans', sans-serif;
     font-style: normal;
     font-weight: 400;
@@ -120,36 +176,43 @@ button{
     margin-top: 30px;
 }
 
-.button-container{
-    display: flex;
-    justify-content: center;
+/* ========================== Eraser window ========================== */
+
+.eraserwindowarrowcontainer{
+    position: fixed;
+    z-index: 102;
+    margin-top: 180px;
+    margin-left: 70px;
 }
 
-.hamburger-menu{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 75px;
-    height: 60px;
-    margin-bottom: 10px;
-}
-
-.side-buttons{
-    width: 35px;
-    height: 35px;
+.eraserpickerwindow{
+    width: 250px;
+    height: 420px;
+    position: fixed;
+    z-index: 102;
+    margin-left: 100px;
+    margin-top: 75px;
     background: #EFEFEF;
-    box-shadow: -3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5);
-    border-radius: 5px;
-    margin-top: 12px;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 3px;
 }
 
-.color-dot{
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
+#eraserwindow{
+    display: none;
+}
+
+#erasertypescontainer{
+    display: inline-block;
+    margin-left: 20px;
+    width: 150px;
+    height: 300px;
+    border: red solid 1px;
+}
+
+#erasersizecontainer{
+    display: inline-block;
+    margin-left: 20px;
+    width: 35px;
+    height: 300px;
+    border: red solid 1px;
 }
 

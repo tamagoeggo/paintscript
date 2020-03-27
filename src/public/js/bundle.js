@@ -1,5 +1,59 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var colorwheel_js_1 = require("./colorwheel.js");
+exports.usedColors = [];
+function generateUsedColors(usedColors) {
+    // default text can be removed 
+    if (usedColors.length == 1) {
+        var noColorsInHistory = document.getElementById('noColorsInHistory');
+        noColorsInHistory.parentNode.removeChild(noColorsInHistory);
+    }
+    while (usedColors.length > 32) {
+        usedColors.splice(-1, 1);
+    }
+    for (var _i = 0, usedColors_1 = usedColors; _i < usedColors_1.length; _i++) {
+        var color = usedColors_1[_i];
+        var usedColor = document.createElement('button');
+        usedColor.className = "colorblock";
+        usedColor.style.cssText = "width: 23px; height: 23px; background-color: " + color;
+        document.getElementById('historycontainer').append(usedColor);
+    }
+}
+exports.generateUsedColors = generateUsedColors;
+function removeUsedColors() {
+    var colorBlock = document.getElementsByClassName('colorblock');
+    while (colorBlock[0]) {
+        colorBlock[0].parentNode.removeChild(colorBlock[0]);
+    }
+}
+exports.removeUsedColors = removeUsedColors;
+function getColorFromHistory() {
+    var _loop_1 = function (i) {
+        document.getElementsByClassName('colorblock')[i].addEventListener("click", function (e) {
+            colorwheel_js_1.colorWheel.hex = exports.usedColors[i];
+        });
+    };
+    for (var i = 0; i < document.getElementsByClassName('colorblock').length; i++) {
+        _loop_1(i);
+    }
+}
+exports.getColorFromHistory = getColorFromHistory;
+function toggleColorWindow() {
+    document.getElementById('color-button').addEventListener('click', function () {
+        var colorWindow = document.getElementById("colourwindow");
+        if (colorWindow.style.display !== 'none') {
+            colorWindow.style.display = 'none';
+        }
+        else {
+            colorWindow.style.display = 'block';
+        }
+    });
+}
+exports.toggleColorWindow = toggleColorWindow;
+
+},{"./colorwheel.js":2}],2:[function(require,module,exports){
+"use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -27,10 +81,35 @@ exports.colorWheel = new reinvented_color_wheel_1.default({
     },
 });
 
-},{"reinvented-color-wheel":9,"reinvented-color-wheel/css/reinvented-color-wheel.min.css":10}],2:[function(require,module,exports){
+},{"reinvented-color-wheel":11,"reinvented-color-wheel/css/reinvented-color-wheel.min.css":12}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var colourwheel_js_1 = require("./colourwheel.js");
+function toggleEraserWindow() {
+    document.getElementById('eraser-button').addEventListener('click', function () {
+        var eraserwindow = document.getElementById("eraserwindow");
+        if (eraserwindow.style.display !== 'none') {
+            eraserwindow.style.display = 'none';
+        }
+        else {
+            eraserwindow.style.display = 'block';
+        }
+    });
+}
+exports.toggleEraserWindow = toggleEraserWindow;
+
+},{}],4:[function(require,module,exports){
+"use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var colorwheel_js_1 = require("./colorwheel.js");
+var colors = __importStar(require("./colors.js"));
+var eraser = __importStar(require("./eraser.js"));
 var DrawingApp = /** @class */ (function () {
     function DrawingApp() {
         var _this = this;
@@ -49,9 +128,9 @@ var DrawingApp = /** @class */ (function () {
             _this.clickX = [];
             _this.clickY = [];
             _this.clickDrag = [];
-            removeUsedColors();
-            generateUsedColors(usedColors);
-            getColorFromHistory();
+            colors.removeUsedColors();
+            colors.generateUsedColors(colors.usedColors);
+            colors.getColorFromHistory();
         };
         this.cancelEventHandler = function () {
             _this.paint = false;
@@ -121,7 +200,7 @@ var DrawingApp = /** @class */ (function () {
         var clickY = this.clickY;
         for (var i = 0; i < clickX.length; ++i) {
             context.beginPath();
-            context.strokeStyle = colourwheel_js_1.colorWheel.hex;
+            context.strokeStyle = colorwheel_js_1.colorWheel.hex;
             if (clickDrag[i] && i) {
                 context.moveTo(clickX[i - 1], clickY[i - 1]);
             }
@@ -131,9 +210,9 @@ var DrawingApp = /** @class */ (function () {
             context.lineTo(clickX[i], clickY[i]);
             context.stroke();
         }
-        if (usedColors.indexOf(colourwheel_js_1.colorWheel.hex) == -1) {
-            usedColors.unshift(colourwheel_js_1.colorWheel.hex);
-            console.log("usedColors:", usedColors);
+        if (colors.usedColors.indexOf(colorwheel_js_1.colorWheel.hex) == -1) {
+            colors.usedColors.unshift(colorwheel_js_1.colorWheel.hex);
+            console.log("usedColors:", colors.usedColors);
         }
         context.closePath();
     };
@@ -145,56 +224,12 @@ var DrawingApp = /** @class */ (function () {
     return DrawingApp;
 }());
 exports.DrawingApp = DrawingApp;
-// color history
-var usedColors = [];
-function generateUsedColors(usedColors) {
-    // default text can be removed 
-    if (usedColors.length == 1) {
-        var noColorsInHistory = document.getElementById('noColorsInHistory');
-        noColorsInHistory.parentNode.removeChild(noColorsInHistory);
-    }
-    while (usedColors.length > 32) {
-        usedColors.splice(-1, 1);
-    }
-    for (var _i = 0, usedColors_1 = usedColors; _i < usedColors_1.length; _i++) {
-        var color = usedColors_1[_i];
-        var usedColor = document.createElement('button');
-        usedColor.className = "colorblock";
-        usedColor.style.cssText = "width: 23px; height: 23px; background-color: " + color;
-        document.getElementById('historycontainer').append(usedColor);
-    }
-}
-function removeUsedColors() {
-    var colorBlock = document.getElementsByClassName('colorblock');
-    while (colorBlock[0]) {
-        colorBlock[0].parentNode.removeChild(colorBlock[0]);
-    }
-}
-function getColorFromHistory() {
-    var _loop_1 = function (i) {
-        document.getElementsByClassName('colorblock')[i].addEventListener("click", function (e) {
-            colourwheel_js_1.colorWheel.hex = usedColors[i];
-        });
-    };
-    for (var i = 0; i < document.getElementsByClassName('colorblock').length; i++) {
-        _loop_1(i);
-    }
-}
-function toggleColorWindow() {
-    document.getElementById('color-button').addEventListener('click', function () {
-        var colorWindow = document.getElementById("colourwindow");
-        if (colorWindow.style.display !== 'none') {
-            colorWindow.style.display = 'none';
-        }
-        else {
-            colorWindow.style.display = 'block';
-        }
-    });
-}
-toggleColorWindow();
+colors.toggleColorWindow();
+document.getElementById("eraserwindow").style.display = 'none';
+eraser.toggleEraserWindow();
 new DrawingApp();
 
-},{"./colourwheel.js":1}],3:[function(require,module,exports){
+},{"./colors.js":1,"./colorwheel.js":2,"./eraser.js":3}],5:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 
@@ -271,7 +306,7 @@ module.exports = {
     }
 };
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 function hsl2hsv(hsl) {
   var h = hsl[0],
       s = hsl[1] / 100,
@@ -292,7 +327,7 @@ function hsl2hsv(hsl) {
 }
 
 module.exports = hsl2hsv;
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 function hsv2hsl(hsv) {
   var h = hsv[0],
       s = hsv[1] / 100,
@@ -308,7 +343,7 @@ function hsv2hsl(hsv) {
 }
 
 module.exports = hsv2hsl;
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var clamp = require("../util/clamp");
 
 function componentToHex(c) {
@@ -325,7 +360,7 @@ function rgb2hex(rgb) {
 }
 
 module.exports = rgb2hex;
-},{"../util/clamp":8}],7:[function(require,module,exports){
+},{"../util/clamp":10}],9:[function(require,module,exports){
 function expand(hex) {
   var result = "#";
 
@@ -359,13 +394,13 @@ function hex(hex) {
 }
 
 module.exports = hex;
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 function clamp(val, min, max) {
   return Math.min(Math.max(val, min), max);
 }
 
 module.exports = clamp;
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -720,6 +755,6 @@ function createElementWithClass(tagName, className) {
 
 module.exports = ReinventedColorWheel;
 
-},{"pure-color/convert/hsl2hsv":4,"pure-color/convert/hsv2hsl":5,"pure-color/convert/rgb2hex":6,"pure-color/parse/hex":7}],10:[function(require,module,exports){
+},{"pure-color/convert/hsl2hsv":6,"pure-color/convert/hsv2hsl":7,"pure-color/convert/rgb2hex":8,"pure-color/parse/hex":9}],12:[function(require,module,exports){
 var css = ".reinvented-color-wheel,\n.reinvented-color-wheel--hue-handle,\n.reinvented-color-wheel--hue-wheel,\n.reinvented-color-wheel--sv-handle,\n.reinvented-color-wheel--sv-space {\n  touch-action: manipulation;\n  touch-action: none;\n  -webkit-touch-callout: none;\n  -webkit-tap-highlight-color: transparent;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n.reinvented-color-wheel {\n  position: relative;\n  display: inline-block;\n  line-height: 0;\n  border-radius: 50%;\n}\n.reinvented-color-wheel--hue-wheel {\n  border-radius: 50%;\n}\n.reinvented-color-wheel--sv-space {\n  position: absolute;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  margin: auto;\n}\n.reinvented-color-wheel--hue-handle,\n.reinvented-color-wheel--sv-handle {\n  position: absolute;\n  box-sizing: border-box;\n  border-radius: 50%;\n  border: 2px solid #fff;\n  box-shadow: 0 0 0 1px #000 inset;\n}\n.reinvented-color-wheel--hue-handle {\n  pointer-events: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules\\reinvented-color-wheel\\css\\reinvented-color-wheel.min.css" }, { "insertAt": "bottom" })); module.exports = css;
-},{"browserify-css":3}]},{},[2]);
+},{"browserify-css":5}]},{},[4]);
