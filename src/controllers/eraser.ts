@@ -20,3 +20,8 @@ export function toggleEraserWindow(){
     });
 } 
 
+let eraserType = null;
+
+export function getEraserType(){
+    
+}

@@ -17,6 +17,8 @@ export class DrawingApp{
     constructor(){
         let canvas = document.getElementById('drawCanvas') as HTMLCanvasElement;
         let context = canvas.getContext("2d");
+        context.canvas.width  = window.innerWidth;
+        context.canvas.height = window.innerHeight;
         context.lineCap = 'round';
         context.lineJoin = 'round';
         context.strokeStyle = 'black';
@@ -155,9 +157,14 @@ function closeOpenWindows(){
     }
 }
 
+let slider = <HTMLInputElement>document.getElementById("eraserslider");
+let output = document.getElementById("output");
+output.innerHTML = slider.value; // Display the default slider value
 
-
-
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  output.innerHTML = slider.value;
+}
 
 new DrawingApp();
 

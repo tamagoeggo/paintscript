@@ -22,4 +22,8 @@ function toggleEraserWindow() {
     });
 }
 exports.toggleEraserWindow = toggleEraserWindow;
+var eraserType = null;
+function getEraserType() {
+}
+exports.getEraserType = getEraserType;
 //# sourceMappingURL=eraser.js.map

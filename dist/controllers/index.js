@@ -68,6 +68,8 @@ var DrawingApp = /** @class */ (function () {
         };
         var canvas = document.getElementById('drawCanvas');
         var context = canvas.getContext("2d");
+        context.canvas.width = window.innerWidth;
+        context.canvas.height = window.innerHeight;
         context.lineCap = 'round';
         context.lineJoin = 'round';
         context.strokeStyle = 'black';
@@ -139,5 +141,12 @@ function closeOpenWindows() {
         pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
     }
 }
+var slider = document.getElementById("eraserslider");
+var output = document.getElementById("output");
+output.innerHTML = slider.value; // Display the default slider value
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function () {
+    output.innerHTML = slider.value;
+};
 new DrawingApp();
 //# sourceMappingURL=index.js.map
