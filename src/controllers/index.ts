@@ -22,7 +22,7 @@ export class DrawingApp{
         context.lineCap = 'round';
         context.lineJoin = 'round';
         context.strokeStyle = 'black';
-        context.lineWidth = 1;
+        context.lineWidth = 10;        
 
         let width = document.getElementById('drawCanvas').scrollWidth;
         let height = document.getElementById('drawCanvas').scrollHeight;
@@ -155,15 +155,6 @@ function closeOpenWindows(){
     for (let i = 0; i < pressedButtons.length; i++) {        
         (<HTMLElement>pressedButtons[i]).style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)'
     }
-}
-
-let slider = <HTMLInputElement>document.getElementById("eraserslider");
-let output = document.getElementById("output");
-output.innerHTML = slider.value; // Display the default slider value
-
-// Update the current slider value (each time you drag the slider handle)
-slider.oninput = function() {
-  output.innerHTML = slider.value;
 }
 
 new DrawingApp();

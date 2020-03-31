@@ -26,4 +26,10 @@ var eraserType = null;
 function getEraserType() {
 }
 exports.getEraserType = getEraserType;
+var slider = document.getElementById("eraserslider");
+slider.oninput = function () {
+    var canvas = document.getElementById('drawCanvas');
+    var context = canvas.getContext("2d");
+    context.lineWidth = Number(slider.value) || 100;
+};
 //# sourceMappingURL=eraser.js.map

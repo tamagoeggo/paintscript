@@ -21,7 +21,13 @@ export function toggleEraserWindow(){
 } 
 
 let eraserType = null;
-
 export function getEraserType(){
-    
+
+}
+
+let slider = document.getElementById("eraserslider") as HTMLInputElement;
+slider.oninput = function() {        
+    let canvas = document.getElementById('drawCanvas') as HTMLCanvasElement;
+    let context = canvas.getContext("2d");
+    context.lineWidth = Number(slider.value) || 100;
 }

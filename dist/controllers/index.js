@@ -73,7 +73,7 @@ var DrawingApp = /** @class */ (function () {
         context.lineCap = 'round';
         context.lineJoin = 'round';
         context.strokeStyle = 'black';
-        context.lineWidth = 1;
+        context.lineWidth = 10;
         var width = document.getElementById('drawCanvas').scrollWidth;
         var height = document.getElementById('drawCanvas').scrollHeight;
         this.canvas = canvas;
@@ -141,12 +141,5 @@ function closeOpenWindows() {
         pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
     }
 }
-var slider = document.getElementById("eraserslider");
-var output = document.getElementById("output");
-output.innerHTML = slider.value; // Display the default slider value
-// Update the current slider value (each time you drag the slider handle)
-slider.oninput = function () {
-    output.innerHTML = slider.value;
-};
 new DrawingApp();
 //# sourceMappingURL=index.js.map
