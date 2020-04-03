@@ -1,6 +1,7 @@
 import { colorWheel } from "./colorwheel.js";
 
 export let usedColors: string[] = [];
+document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
 
 export function generateUsedColors(usedColors: string[]) {
     // default text can be removed 
@@ -36,24 +37,23 @@ export function getColorFromHistory(){
     }
 }
 
-export function toggleColorWindow(){
-    document.getElementById('color-button').addEventListener('click', () => {
-        let colorWindow = document.getElementById("colourwindow");
-        if (colorWindow.style.display !== 'none') {
-            colorWindow.style.display = 'none';
-            document.getElementById('color-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+// toggle color window
+document.getElementById('color-button').addEventListener('click', () => {
+    let colorWindow = document.getElementById("colourwindow");
+    if (colorWindow.style.display !== 'none') {
+        colorWindow.style.display = 'none';
+        document.getElementById('color-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+    }
+    else {
+        let openWindows = document.getElementsByClassName("side-window");
+        for (let i = 0; i < openWindows.length; i++) {        
+            (<HTMLElement>openWindows[i]).style.display = 'none';
         }
-        else {
-            let openWindows = document.getElementsByClassName("side-window");
-            for (let i = 0; i < openWindows.length; i++) {        
-                (<HTMLElement>openWindows[i]).style.display = 'none';
-            }
-            let pressedButtons = document.getElementsByClassName('side-buttons')
-            for (let i = 0; i < pressedButtons.length; i++) {        
-                (<HTMLElement>pressedButtons[i]).style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)'
-            }
-            colorWindow.style.display = 'block';
-            document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
+        let pressedButtons = document.getElementsByClassName('side-buttons')
+        for (let i = 0; i < pressedButtons.length; i++) {        
+            (<HTMLElement>pressedButtons[i]).style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)'
         }
-    });
-} 
+        colorWindow.style.display = 'block';
+        document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
+    }
+});

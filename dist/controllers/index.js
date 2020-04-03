@@ -10,6 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var colorwheel_js_1 = require("./colorwheel.js");
 var colors = __importStar(require("./colors.js"));
 var eraser = __importStar(require("./eraser.js"));
+var windows = __importStar(require("./window.js"));
 var DrawingApp = /** @class */ (function () {
     function DrawingApp() {
         var _this = this;
@@ -48,7 +49,7 @@ var DrawingApp = /** @class */ (function () {
             _this.paint = true;
             _this.addClick(mouseX, mouseY, false);
             _this.redraw();
-            closeOpenWindows();
+            windows.closeOpenWindows();
         };
         // moving of cursor/touch while in down state
         this.dragEventHandler = function (e) {
@@ -126,20 +127,7 @@ var DrawingApp = /** @class */ (function () {
     return DrawingApp;
 }());
 exports.DrawingApp = DrawingApp;
-// Toggle 
-document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
-colors.toggleColorWindow();
 document.getElementById('eraserwindow').style.display = 'none';
-eraser.toggleEraserWindow();
-function closeOpenWindows() {
-    var openWindows = document.getElementsByClassName('side-window');
-    for (var i = 0; i < openWindows.length; i++) {
-        openWindows[i].style.display = 'none';
-    }
-    var pressedButtons = document.getElementsByClassName('side-buttons');
-    for (var i = 0; i < pressedButtons.length; i++) {
-        pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-    }
-}
+eraser.getEraserType();
 new DrawingApp();
 //# sourceMappingURL=index.js.map

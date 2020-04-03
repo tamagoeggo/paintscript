@@ -2,12 +2,13 @@ html, body{
     height:100%;
     width: 100%;
     margin: 0px;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
 }
-
-/* body{
-    margin: 0px;
-    height: 100%;
-} */
 
 button{
     border: none;
@@ -237,6 +238,15 @@ button{
     text-align: center;
     padding-top: 5px;
     position: relative;
+    margin-bottom: 5px;
+}
+
+.erasercontainer:hover{
+    background: #8FC4F5 !important;
+}
+
+.erasercontainer:active{
+    background: #4FA2EE;
 }
 
 .eraser-name{
@@ -276,7 +286,7 @@ button{
     z-index: 1;
 }
 
-.slider::-webkit-slider-thumb {
+.slider::-webkit-slider-thumb{
     -webkit-appearance: none; 
     appearance: none;
     height: 34px;
@@ -284,12 +294,16 @@ button{
     background: #4FA2EE;
     border-radius: 5px;
     cursor: pointer; 
-  }
+}
   
-  .slider::-moz-range-thumb {
+.slider::-moz-range-thumb{
     height: 34px;
     width: 8px;
     background: #4FA2EE;
     border-radius: 5px;
     cursor: pointer; 
-  }
+}
+
+.slider::-webkit-slider-thumb:hover{
+    background: #8FC4F5;
+}

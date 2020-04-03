@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var colorwheel_js_1 = require("./colorwheel.js");
 exports.usedColors = [];
+document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
 function generateUsedColors(usedColors) {
     // default text can be removed 
     if (usedColors.length == 1) {
@@ -39,28 +40,26 @@ function getColorFromHistory() {
     }
 }
 exports.getColorFromHistory = getColorFromHistory;
-function toggleColorWindow() {
-    document.getElementById('color-button').addEventListener('click', function () {
-        var colorWindow = document.getElementById("colourwindow");
-        if (colorWindow.style.display !== 'none') {
-            colorWindow.style.display = 'none';
-            document.getElementById('color-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+// toggle color window
+document.getElementById('color-button').addEventListener('click', function () {
+    var colorWindow = document.getElementById("colourwindow");
+    if (colorWindow.style.display !== 'none') {
+        colorWindow.style.display = 'none';
+        document.getElementById('color-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+    }
+    else {
+        var openWindows = document.getElementsByClassName("side-window");
+        for (var i = 0; i < openWindows.length; i++) {
+            openWindows[i].style.display = 'none';
         }
-        else {
-            var openWindows = document.getElementsByClassName("side-window");
-            for (var i = 0; i < openWindows.length; i++) {
-                openWindows[i].style.display = 'none';
-            }
-            var pressedButtons = document.getElementsByClassName('side-buttons');
-            for (var i = 0; i < pressedButtons.length; i++) {
-                pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-            }
-            colorWindow.style.display = 'block';
-            document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
+        var pressedButtons = document.getElementsByClassName('side-buttons');
+        for (var i = 0; i < pressedButtons.length; i++) {
+            pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
         }
-    });
-}
-exports.toggleColorWindow = toggleColorWindow;
+        colorWindow.style.display = 'block';
+        document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
+    }
+});
 
 },{"./colorwheel.js":2}],2:[function(require,module,exports){
 "use strict";
@@ -75,10 +74,10 @@ exports.colorWheel = new reinvented_color_wheel_1.default({
     appendTo: document.getElementById('colourpickercontainer'),
     // followings are optional properties and their default values.
     // initial color (can be specified in hsv / hsl / rgb / hex)
-    hsv: [0, 100, 100],
+    // hsv: [0, 100, 100],
     // hsl: [0, 100, 50],
     // rgb: [255, 0, 0],
-    // hex: "#ff0000",
+    hex: "#0086ff",
     // appearance
     wheelDiameter: 200,
     wheelThickness: 30,
@@ -91,41 +90,54 @@ exports.colorWheel = new reinvented_color_wheel_1.default({
     },
 });
 
-},{"reinvented-color-wheel":11,"reinvented-color-wheel/css/reinvented-color-wheel.min.css":12}],3:[function(require,module,exports){
+},{"reinvented-color-wheel":12,"reinvented-color-wheel/css/reinvented-color-wheel.min.css":13}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function toggleEraserWindow() {
-    document.getElementById('eraser-button').addEventListener('click', function () {
-        var eraserwindow = document.getElementById("eraserwindow");
-        if (eraserwindow.style.display !== 'none') {
-            eraserwindow.style.display = 'none';
-            document.getElementById('eraser-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+// toggle eraser window
+document.getElementById('eraser-button').addEventListener('click', function () {
+    var eraserwindow = document.getElementById("eraserwindow");
+    if (eraserwindow.style.display !== 'none') {
+        eraserwindow.style.display = 'none';
+        document.getElementById('eraser-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+    }
+    else {
+        var openWindows = document.getElementsByClassName("side-window");
+        for (var i = 0; i < openWindows.length; i++) {
+            openWindows[i].style.display = 'none';
         }
-        else {
-            var openWindows = document.getElementsByClassName("side-window");
-            for (var i = 0; i < openWindows.length; i++) {
-                openWindows[i].style.display = 'none';
-            }
-            var pressedButtons = document.getElementsByClassName('side-buttons');
-            for (var i = 0; i < pressedButtons.length; i++) {
-                pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-            }
-            eraserwindow.style.display = 'block';
-            document.getElementById('eraser-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
+        var pressedButtons = document.getElementsByClassName('side-buttons');
+        for (var i = 0; i < pressedButtons.length; i++) {
+            pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
         }
+        eraserwindow.style.display = 'block';
+        document.getElementById('eraser-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
+    }
+});
+// eraser selection
+var eraser = document.getElementsByClassName("erasercontainer");
+var _loop_1 = function (i) {
+    eraser[i].addEventListener('click', function () {
+        var selectedEraser = eraser[i];
+        for (var i_1 = 0; i_1 < eraser.length; i_1++) {
+            eraser[i_1].style.background = '#A6A6A6';
+        }
+        selectedEraser.style.background = '#4FA2EE';
     });
+};
+for (var i = 0; i < eraser.length; i++) {
+    _loop_1(i);
 }
-exports.toggleEraserWindow = toggleEraserWindow;
-var eraserType = null;
-function getEraserType() {
-}
-exports.getEraserType = getEraserType;
+// eraser size
 var slider = document.getElementById("eraserslider");
 slider.oninput = function () {
     var canvas = document.getElementById('drawCanvas');
     var context = canvas.getContext("2d");
     context.lineWidth = Number(slider.value) || 100;
 };
+var eraserType = null;
+function getEraserType() {
+}
+exports.getEraserType = getEraserType;
 
 },{}],4:[function(require,module,exports){
 "use strict";
@@ -140,6 +152,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var colorwheel_js_1 = require("./colorwheel.js");
 var colors = __importStar(require("./colors.js"));
 var eraser = __importStar(require("./eraser.js"));
+var windows = __importStar(require("./window.js"));
 var DrawingApp = /** @class */ (function () {
     function DrawingApp() {
         var _this = this;
@@ -178,7 +191,7 @@ var DrawingApp = /** @class */ (function () {
             _this.paint = true;
             _this.addClick(mouseX, mouseY, false);
             _this.redraw();
-            closeOpenWindows();
+            windows.closeOpenWindows();
         };
         // moving of cursor/touch while in down state
         this.dragEventHandler = function (e) {
@@ -256,11 +269,13 @@ var DrawingApp = /** @class */ (function () {
     return DrawingApp;
 }());
 exports.DrawingApp = DrawingApp;
-// Toggle 
-document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
-colors.toggleColorWindow();
 document.getElementById('eraserwindow').style.display = 'none';
-eraser.toggleEraserWindow();
+eraser.getEraserType();
+new DrawingApp();
+
+},{"./colors.js":1,"./colorwheel.js":2,"./eraser.js":3,"./window.js":5}],5:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function closeOpenWindows() {
     var openWindows = document.getElementsByClassName('side-window');
     for (var i = 0; i < openWindows.length; i++) {
@@ -271,9 +286,9 @@ function closeOpenWindows() {
         pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
     }
 }
-new DrawingApp();
+exports.closeOpenWindows = closeOpenWindows;
 
-},{"./colors.js":1,"./colorwheel.js":2,"./eraser.js":3}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 
@@ -350,7 +365,7 @@ module.exports = {
     }
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 function hsl2hsv(hsl) {
   var h = hsl[0],
       s = hsl[1] / 100,
@@ -371,7 +386,7 @@ function hsl2hsv(hsl) {
 }
 
 module.exports = hsl2hsv;
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 function hsv2hsl(hsv) {
   var h = hsv[0],
       s = hsv[1] / 100,
@@ -387,7 +402,7 @@ function hsv2hsl(hsv) {
 }
 
 module.exports = hsv2hsl;
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var clamp = require("../util/clamp");
 
 function componentToHex(c) {
@@ -404,7 +419,7 @@ function rgb2hex(rgb) {
 }
 
 module.exports = rgb2hex;
-},{"../util/clamp":10}],9:[function(require,module,exports){
+},{"../util/clamp":11}],10:[function(require,module,exports){
 function expand(hex) {
   var result = "#";
 
@@ -438,13 +453,13 @@ function hex(hex) {
 }
 
 module.exports = hex;
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 function clamp(val, min, max) {
   return Math.min(Math.max(val, min), max);
 }
 
 module.exports = clamp;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -799,6 +814,6 @@ function createElementWithClass(tagName, className) {
 
 module.exports = ReinventedColorWheel;
 
-},{"pure-color/convert/hsl2hsv":6,"pure-color/convert/hsv2hsl":7,"pure-color/convert/rgb2hex":8,"pure-color/parse/hex":9}],12:[function(require,module,exports){
+},{"pure-color/convert/hsl2hsv":7,"pure-color/convert/hsv2hsl":8,"pure-color/convert/rgb2hex":9,"pure-color/parse/hex":10}],13:[function(require,module,exports){
 var css = ".reinvented-color-wheel,\n.reinvented-color-wheel--hue-handle,\n.reinvented-color-wheel--hue-wheel,\n.reinvented-color-wheel--sv-handle,\n.reinvented-color-wheel--sv-space {\n  touch-action: manipulation;\n  touch-action: none;\n  -webkit-touch-callout: none;\n  -webkit-tap-highlight-color: transparent;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n.reinvented-color-wheel {\n  position: relative;\n  display: inline-block;\n  line-height: 0;\n  border-radius: 50%;\n}\n.reinvented-color-wheel--hue-wheel {\n  border-radius: 50%;\n}\n.reinvented-color-wheel--sv-space {\n  position: absolute;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  margin: auto;\n}\n.reinvented-color-wheel--hue-handle,\n.reinvented-color-wheel--sv-handle {\n  position: absolute;\n  box-sizing: border-box;\n  border-radius: 50%;\n  border: 2px solid #fff;\n  box-shadow: 0 0 0 1px #000 inset;\n}\n.reinvented-color-wheel--hue-handle {\n  pointer-events: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules\\reinvented-color-wheel\\css\\reinvented-color-wheel.min.css" }, { "insertAt": "bottom" })); module.exports = css;
-},{"browserify-css":5}]},{},[4]);
+},{"browserify-css":6}]},{},[4]);

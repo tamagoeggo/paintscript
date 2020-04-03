@@ -10,10 +10,10 @@ exports.colorWheel = new reinvented_color_wheel_1.default({
     appendTo: document.getElementById('colourpickercontainer'),
     // followings are optional properties and their default values.
     // initial color (can be specified in hsv / hsl / rgb / hex)
-    hsv: [0, 100, 100],
+    // hsv: [0, 100, 100],
     // hsl: [0, 100, 50],
     // rgb: [255, 0, 0],
-    // hex: "#ff0000",
+    hex: "#0086ff",
     // appearance
     wheelDiameter: 200,
     wheelThickness: 30,

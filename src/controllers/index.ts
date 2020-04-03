@@ -1,6 +1,7 @@
 import { colorWheel } from "./colorwheel.js";
 import * as colors from "./colors.js";
 import * as eraser from "./eraser.js";
+import * as windows from "./window.js";
 
 export class DrawingApp{
     private canvas: HTMLCanvasElement;
@@ -117,7 +118,7 @@ export class DrawingApp{
         this.paint = true;
         this.addClick(mouseX, mouseY, false);
         this.redraw();
-        closeOpenWindows(); 
+        windows.closeOpenWindows(); 
     }
 
     // moving of cursor/touch while in down state
@@ -139,23 +140,8 @@ export class DrawingApp{
     }
 }
 
-// Toggle 
-document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
-colors.toggleColorWindow();
-
 document.getElementById('eraserwindow').style.display = 'none';
-eraser.toggleEraserWindow();
-
-function closeOpenWindows(){
-    let openWindows = document.getElementsByClassName('side-window');
-    for (let i = 0; i < openWindows.length; i++) {        
-        (<HTMLElement>openWindows[i]).style.display = 'none';        
-    }
-    let pressedButtons = document.getElementsByClassName('side-buttons')
-    for (let i = 0; i < pressedButtons.length; i++) {        
-        (<HTMLElement>pressedButtons[i]).style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)'
-    }
-}
+eraser.getEraserType();
 
 new DrawingApp();
 

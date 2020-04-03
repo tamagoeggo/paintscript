@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var colorwheel_js_1 = require("./colorwheel.js");
 exports.usedColors = [];
+document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
 function generateUsedColors(usedColors) {
     // default text can be removed 
     if (usedColors.length == 1) {
@@ -38,26 +39,24 @@ function getColorFromHistory() {
     }
 }
 exports.getColorFromHistory = getColorFromHistory;
-function toggleColorWindow() {
-    document.getElementById('color-button').addEventListener('click', function () {
-        var colorWindow = document.getElementById("colourwindow");
-        if (colorWindow.style.display !== 'none') {
-            colorWindow.style.display = 'none';
-            document.getElementById('color-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+// toggle color window
+document.getElementById('color-button').addEventListener('click', function () {
+    var colorWindow = document.getElementById("colourwindow");
+    if (colorWindow.style.display !== 'none') {
+        colorWindow.style.display = 'none';
+        document.getElementById('color-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+    }
+    else {
+        var openWindows = document.getElementsByClassName("side-window");
+        for (var i = 0; i < openWindows.length; i++) {
+            openWindows[i].style.display = 'none';
         }
-        else {
-            var openWindows = document.getElementsByClassName("side-window");
-            for (var i = 0; i < openWindows.length; i++) {
-                openWindows[i].style.display = 'none';
-            }
-            var pressedButtons = document.getElementsByClassName('side-buttons');
-            for (var i = 0; i < pressedButtons.length; i++) {
-                pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-            }
-            colorWindow.style.display = 'block';
-            document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
+        var pressedButtons = document.getElementsByClassName('side-buttons');
+        for (var i = 0; i < pressedButtons.length; i++) {
+            pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
         }
-    });
-}
-exports.toggleColorWindow = toggleColorWindow;
+        colorWindow.style.display = 'block';
+        document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
+    }
+});
 //# sourceMappingURL=colors.js.map
