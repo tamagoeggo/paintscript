@@ -10,6 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var colorwheel_js_1 = require("./colorwheel.js");
 var colors = __importStar(require("./colors.js"));
 var eraser = __importStar(require("./eraser.js"));
+var brush = __importStar(require("./paintbrush.js"));
 var windows = __importStar(require("./window.js"));
 var DrawingApp = /** @class */ (function () {
     function DrawingApp() {
@@ -38,6 +39,12 @@ var DrawingApp = /** @class */ (function () {
         };
         // initial click/touch
         this.pressEventHandler = function (e) {
+            if (exports.mode.drawingmode) {
+                _this.context.globalCompositeOperation = "source-over";
+            }
+            else {
+                _this.context.globalCompositeOperation = "destination-out";
+            }
             var mouseX = e.changedTouches ?
                 e.changedTouches[0].pageX :
                 e.pageX;
@@ -127,7 +134,10 @@ var DrawingApp = /** @class */ (function () {
     return DrawingApp;
 }());
 exports.DrawingApp = DrawingApp;
+exports.mode = { drawingmode: true };
 document.getElementById('eraserwindow').style.display = 'none';
 eraser.getEraserType();
+document.getElementById('eraserwindow').style.display = 'none';
+brush.getBrushType();
 new DrawingApp();
 //# sourceMappingURL=index.js.map

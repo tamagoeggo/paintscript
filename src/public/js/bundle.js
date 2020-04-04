@@ -90,9 +90,10 @@ exports.colorWheel = new reinvented_color_wheel_1.default({
     },
 });
 
-},{"reinvented-color-wheel":12,"reinvented-color-wheel/css/reinvented-color-wheel.min.css":13}],3:[function(require,module,exports){
+},{"reinvented-color-wheel":13,"reinvented-color-wheel/css/reinvented-color-wheel.min.css":14}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var index_js_1 = require("./index.js");
 // toggle eraser window
 document.getElementById('eraser-button').addEventListener('click', function () {
     var eraserwindow = document.getElementById("eraserwindow");
@@ -118,6 +119,7 @@ var eraser = document.getElementsByClassName("erasercontainer");
 var _loop_1 = function (i) {
     eraser[i].addEventListener('click', function () {
         var selectedEraser = eraser[i];
+        index_js_1.mode.drawingmode = false;
         for (var i_1 = 0; i_1 < eraser.length; i_1++) {
             eraser[i_1].style.background = '#A6A6A6';
         }
@@ -132,14 +134,14 @@ var slider = document.getElementById("eraserslider");
 slider.oninput = function () {
     var canvas = document.getElementById('drawCanvas');
     var context = canvas.getContext("2d");
-    context.lineWidth = Number(slider.value) || 100;
+    context.lineWidth = Number(slider.value) || 50;
 };
 var eraserType = null;
 function getEraserType() {
 }
 exports.getEraserType = getEraserType;
 
-},{}],4:[function(require,module,exports){
+},{"./index.js":4}],4:[function(require,module,exports){
 "use strict";
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
@@ -152,6 +154,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var colorwheel_js_1 = require("./colorwheel.js");
 var colors = __importStar(require("./colors.js"));
 var eraser = __importStar(require("./eraser.js"));
+var brush = __importStar(require("./paintbrush.js"));
 var windows = __importStar(require("./window.js"));
 var DrawingApp = /** @class */ (function () {
     function DrawingApp() {
@@ -180,6 +183,12 @@ var DrawingApp = /** @class */ (function () {
         };
         // initial click/touch
         this.pressEventHandler = function (e) {
+            if (exports.mode.drawingmode) {
+                _this.context.globalCompositeOperation = "source-over";
+            }
+            else {
+                _this.context.globalCompositeOperation = "destination-out";
+            }
             var mouseX = e.changedTouches ?
                 e.changedTouches[0].pageX :
                 e.pageX;
@@ -269,11 +278,65 @@ var DrawingApp = /** @class */ (function () {
     return DrawingApp;
 }());
 exports.DrawingApp = DrawingApp;
+exports.mode = { drawingmode: true };
 document.getElementById('eraserwindow').style.display = 'none';
 eraser.getEraserType();
+document.getElementById('eraserwindow').style.display = 'none';
+brush.getBrushType();
 new DrawingApp();
 
-},{"./colors.js":1,"./colorwheel.js":2,"./eraser.js":3,"./window.js":5}],5:[function(require,module,exports){
+},{"./colors.js":1,"./colorwheel.js":2,"./eraser.js":3,"./paintbrush.js":5,"./window.js":6}],5:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var index_js_1 = require("./index.js");
+// toggle brush window
+document.getElementById('paintbrush-button').addEventListener('click', function () {
+    var brushwindow = document.getElementById("brushwindow");
+    if (brushwindow.style.display !== 'none') {
+        brushwindow.style.display = 'none';
+        document.getElementById('paintbrush-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+    }
+    else {
+        var openWindows = document.getElementsByClassName("side-window");
+        for (var i = 0; i < openWindows.length; i++) {
+            openWindows[i].style.display = 'none';
+        }
+        var pressedButtons = document.getElementsByClassName('side-buttons');
+        for (var i = 0; i < pressedButtons.length; i++) {
+            pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+        }
+        brushwindow.style.display = 'block';
+        document.getElementById('paintbrush-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
+    }
+});
+// paintbrush selection
+var brush = document.getElementsByClassName("brushcontainer");
+var _loop_1 = function (i) {
+    brush[i].addEventListener('click', function () {
+        var selectedBrush = brush[i];
+        index_js_1.mode.drawingmode = true;
+        for (var i_1 = 0; i_1 < brush.length; i_1++) {
+            brush[i_1].style.background = '#A6A6A6';
+        }
+        selectedBrush.style.background = '#4FA2EE';
+    });
+};
+for (var i = 0; i < brush.length; i++) {
+    _loop_1(i);
+}
+// eraser size
+var slider = document.getElementById("brushslider");
+slider.oninput = function () {
+    var canvas = document.getElementById('drawCanvas');
+    var context = canvas.getContext("2d");
+    context.lineWidth = Number(slider.value) || 50;
+};
+var brushType = null;
+function getBrushType() {
+}
+exports.getBrushType = getBrushType;
+
+},{"./index.js":4}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function closeOpenWindows() {
@@ -288,7 +351,7 @@ function closeOpenWindows() {
 }
 exports.closeOpenWindows = closeOpenWindows;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 
@@ -365,7 +428,7 @@ module.exports = {
     }
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 function hsl2hsv(hsl) {
   var h = hsl[0],
       s = hsl[1] / 100,
@@ -386,7 +449,7 @@ function hsl2hsv(hsl) {
 }
 
 module.exports = hsl2hsv;
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 function hsv2hsl(hsv) {
   var h = hsv[0],
       s = hsv[1] / 100,
@@ -402,7 +465,7 @@ function hsv2hsl(hsv) {
 }
 
 module.exports = hsv2hsl;
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var clamp = require("../util/clamp");
 
 function componentToHex(c) {
@@ -419,7 +482,7 @@ function rgb2hex(rgb) {
 }
 
 module.exports = rgb2hex;
-},{"../util/clamp":11}],10:[function(require,module,exports){
+},{"../util/clamp":12}],11:[function(require,module,exports){
 function expand(hex) {
   var result = "#";
 
@@ -453,13 +516,13 @@ function hex(hex) {
 }
 
 module.exports = hex;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 function clamp(val, min, max) {
   return Math.min(Math.max(val, min), max);
 }
 
 module.exports = clamp;
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -814,6 +877,6 @@ function createElementWithClass(tagName, className) {
 
 module.exports = ReinventedColorWheel;
 
-},{"pure-color/convert/hsl2hsv":7,"pure-color/convert/hsv2hsl":8,"pure-color/convert/rgb2hex":9,"pure-color/parse/hex":10}],13:[function(require,module,exports){
+},{"pure-color/convert/hsl2hsv":8,"pure-color/convert/hsv2hsl":9,"pure-color/convert/rgb2hex":10,"pure-color/parse/hex":11}],14:[function(require,module,exports){
 var css = ".reinvented-color-wheel,\n.reinvented-color-wheel--hue-handle,\n.reinvented-color-wheel--hue-wheel,\n.reinvented-color-wheel--sv-handle,\n.reinvented-color-wheel--sv-space {\n  touch-action: manipulation;\n  touch-action: none;\n  -webkit-touch-callout: none;\n  -webkit-tap-highlight-color: transparent;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n.reinvented-color-wheel {\n  position: relative;\n  display: inline-block;\n  line-height: 0;\n  border-radius: 50%;\n}\n.reinvented-color-wheel--hue-wheel {\n  border-radius: 50%;\n}\n.reinvented-color-wheel--sv-space {\n  position: absolute;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  margin: auto;\n}\n.reinvented-color-wheel--hue-handle,\n.reinvented-color-wheel--sv-handle {\n  position: absolute;\n  box-sizing: border-box;\n  border-radius: 50%;\n  border: 2px solid #fff;\n  box-shadow: 0 0 0 1px #000 inset;\n}\n.reinvented-color-wheel--hue-handle {\n  pointer-events: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules\\reinvented-color-wheel\\css\\reinvented-color-wheel.min.css" }, { "insertAt": "bottom" })); module.exports = css;
-},{"browserify-css":6}]},{},[4]);
+},{"browserify-css":7}]},{},[4]);

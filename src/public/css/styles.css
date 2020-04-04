@@ -147,7 +147,7 @@ button{
     stroke-linecap: round;
 }
 
-.colours-text, .eraser-text{
+.colours-text, .eraser-text, .brush-text{
     font-family: 'Noto Sans JP', sans-serif;
     font-style: normal;
     font-weight: 400;
@@ -197,7 +197,7 @@ button{
     margin-left: 70px;
 }
 
-.eraserpickerwindow{
+.eraserpickerwindow, .brushpickerwindow{
     width: 260px;
     height: 420px;
     position: fixed;
@@ -208,11 +208,11 @@ button{
     border-radius: 3px;
 }
 
-#eraserwindow{
+#eraserwindow, #brushwindow{
     display: none;
 }
 
-#erasertypescontainer{
+#erasertypescontainer, #brushtypescontainer{
     display: inline-block;
     margin-left: 20px;
     width: 160px;
@@ -221,7 +221,7 @@ button{
     vertical-align: top;
 }
 
-#erasersizecontainer{
+#erasersizecontainer, #brushsizecontainer{
     display: inline-block;
     margin-left: 20px;
     width: 33px;
@@ -230,7 +230,7 @@ button{
     /* border: red solid 1px; */
 }
 
-.erasercontainer{
+.erasercontainer, .brushcontainer{
     width: 157px;
     height: 70px;
     background: #A6A6A6;
@@ -241,15 +241,15 @@ button{
     margin-bottom: 5px;
 }
 
-.erasercontainer:hover{
+.erasercontainer:hover, .brushcontainer:hover{
     background: #8FC4F5 !important;
 }
 
-.erasercontainer:active{
+.erasercontainer:active, .brushcontainer:active{
     background: #4FA2EE;
 }
 
-.eraser-name{
+.eraser-name, .brush-name{
     font-family: 'Noto Sans JP', sans-serif;
     font-weight: 100;
     font-size: 12px;
@@ -307,3 +307,15 @@ button{
 .slider::-webkit-slider-thumb:hover{
     background: #8FC4F5;
 }
+
+/* ========================== Eraser window ========================== */
+
+.brushwindowarrowcontainer{
+    position: fixed;
+    z-index: 102;
+    margin-top: 120px;
+    margin-left: 70px;
+}
+
+
+

@@ -1,17 +1,17 @@
-div#eraserwindow.side-window
-    div.eraserwindowarrowcontainer
-        svg.eraserpickerwindowarrow(height="80" width="80" fill="#EFEFEF")
+div#brushwindow.side-window
+    div.brushwindowarrowcontainer
+        svg.brushpickerwindowarrow(height="80" width="80" fill="#EFEFEF")
             path(d="M 10,40 40,20 40,60 Z")
     div
-    div.eraserpickerwindow
-        p.eraser-text Eraser
-            div#erasertypescontainer
-                div#normalerasercontainer.erasercontainer                     
-                    p.eraser-name Simple
+    div.brushpickerwindow
+        p.brush-text Brushes
+            div#brushtypescontainer
+                div#normalbrushcontainer.brushcontainer                     
+                    p.brush-name Simple
                     img(src="/images/normal-eraser-stroke.svg" alt="Eraser stroke" width="117" height="29")
-                div#testerasercontainer.erasercontainer                     
-                    p.eraser-name Simple
+                div#testpaintcontainer.brushcontainer                     
+                    p.brush-name Simple
                     img(src="/images/normal-eraser-stroke.svg" alt="Eraser stroke" width="117" height="29")
-            div#erasersizecontainer
-                input.slider#eraserslider(type="range" min="1" max="50" value="10")
+            div#brushsizecontainer
+                input.slider#brushslider(type="range" min="1" max="80" value="10")
                 img.slidertriangle(src="/images/slider.svg" width="27" height="310")

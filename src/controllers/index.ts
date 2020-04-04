@@ -1,6 +1,7 @@
 import { colorWheel } from "./colorwheel.js";
 import * as colors from "./colors.js";
 import * as eraser from "./eraser.js";
+import * as brush from "./paintbrush.js";
 import * as windows from "./window.js";
 
 export class DrawingApp{
@@ -106,6 +107,12 @@ export class DrawingApp{
 
     // initial click/touch
     private pressEventHandler = (e: MouseEvent | TouchEvent) => {
+        if(mode.drawingmode){
+            this.context.globalCompositeOperation = "source-over";
+        }
+        else{
+            this.context.globalCompositeOperation = "destination-out";
+        }
         let mouseX = (e as TouchEvent).changedTouches ?
                      (e as TouchEvent).changedTouches[0].pageX :
                      (e as MouseEvent).pageX;
@@ -140,8 +147,13 @@ export class DrawingApp{
     }
 }
 
+export const mode = {drawingmode: true}
+
 document.getElementById('eraserwindow').style.display = 'none';
 eraser.getEraserType();
+
+document.getElementById('brushwindow').style.display = 'none';
+brush.getBrushType();
 
 new DrawingApp();
 

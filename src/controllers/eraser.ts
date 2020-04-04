@@ -1,3 +1,5 @@
+import { mode } from "./index.js";
+
 // toggle eraser window
 document.getElementById('eraser-button').addEventListener('click', () => {
     let eraserwindow = document.getElementById("eraserwindow");
@@ -25,6 +27,7 @@ let eraser = document.getElementsByClassName("erasercontainer");
 for (let i = 0; i < eraser.length; i++) {        
     eraser[i].addEventListener('click', () => {
         let selectedEraser = eraser[i];
+        mode.drawingmode = false;
         for (let i = 0; i < eraser.length; i++){
             (<HTMLElement>eraser[i]).style.background = '#A6A6A6';
         }
@@ -37,7 +40,7 @@ let slider = document.getElementById("eraserslider") as HTMLInputElement;
 slider.oninput = function() {        
     let canvas = document.getElementById('drawCanvas') as HTMLCanvasElement;
     let context = canvas.getContext("2d");
-    context.lineWidth = Number(slider.value) || 100;
+    context.lineWidth = Number(slider.value) || 10;
 }
 
 let eraserType = null;

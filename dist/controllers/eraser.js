@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var index_js_1 = require("./index.js");
 // toggle eraser window
 document.getElementById('eraser-button').addEventListener('click', function () {
     var eraserwindow = document.getElementById("eraserwindow");
@@ -25,6 +26,7 @@ var eraser = document.getElementsByClassName("erasercontainer");
 var _loop_1 = function (i) {
     eraser[i].addEventListener('click', function () {
         var selectedEraser = eraser[i];
+        index_js_1.mode.drawingmode = false;
         for (var i_1 = 0; i_1 < eraser.length; i_1++) {
             eraser[i_1].style.background = '#A6A6A6';
         }
@@ -39,7 +41,7 @@ var slider = document.getElementById("eraserslider");
 slider.oninput = function () {
     var canvas = document.getElementById('drawCanvas');
     var context = canvas.getContext("2d");
-    context.lineWidth = Number(slider.value) || 100;
+    context.lineWidth = Number(slider.value) || 50;
 };
 var eraserType = null;
 function getEraserType() {
