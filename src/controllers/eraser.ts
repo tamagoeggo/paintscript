@@ -1,5 +1,10 @@
 import { mode } from "./index.js";
 
+export class Eraser{
+    private size: number;
+    
+}
+
 // toggle eraser window
 document.getElementById('eraser-button').addEventListener('click', () => {
     let eraserwindow = document.getElementById("eraserwindow");

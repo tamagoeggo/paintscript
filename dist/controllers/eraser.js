@@ -1,6 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_js_1 = require("./index.js");
+var Eraser = /** @class */ (function () {
+    function Eraser() {
+    }
+    return Eraser;
+}());
+exports.Eraser = Eraser;
 // toggle eraser window
 document.getElementById('eraser-button').addEventListener('click', function () {
     var eraserwindow = document.getElementById("eraserwindow");
@@ -41,7 +47,7 @@ var slider = document.getElementById("eraserslider");
 slider.oninput = function () {
     var canvas = document.getElementById('drawCanvas');
     var context = canvas.getContext("2d");
-    context.lineWidth = Number(slider.value) || 50;
+    context.lineWidth = Number(slider.value) || 10;
 };
 var eraserType = null;
 function getEraserType() {

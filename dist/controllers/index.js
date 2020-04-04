@@ -18,6 +18,11 @@ var DrawingApp = /** @class */ (function () {
         this.clickX = [];
         this.clickY = [];
         this.clickDrag = [];
+        this.color = [];
+        this.clickXHistory = [];
+        this.clickYHistory = [];
+        this.clickDragHistory = [];
+        this.colorHistory = [];
         this.clearEventHandler = function () {
             _this.context.clearRect(0, 0, _this.canvas.width, _this.canvas.height);
             _this.clickX = [];
@@ -27,9 +32,14 @@ var DrawingApp = /** @class */ (function () {
         this.releaseEventHandler = function () {
             _this.paint = false;
             _this.redraw(); // final redraw call
+            _this.clickXHistory = _this.clickXHistory.concat(_this.clickX);
+            _this.clickYHistory = _this.clickYHistory.concat(_this.clickY);
+            _this.clickDragHistory = _this.clickDragHistory.concat(_this.clickDrag);
+            _this.colorHistory = _this.colorHistory.concat(_this.color);
             _this.clickX = [];
             _this.clickY = [];
             _this.clickDrag = [];
+            _this.color = [];
             colors.removeUsedColors();
             colors.generateUsedColors(colors.usedColors);
             colors.getColorFromHistory();
@@ -54,7 +64,7 @@ var DrawingApp = /** @class */ (function () {
             mouseX -= _this.canvas.offsetLeft;
             mouseY -= _this.canvas.offsetTop;
             _this.paint = true;
-            _this.addClick(mouseX, mouseY, false);
+            _this.addClick(mouseX, mouseY, false, colorwheel_js_1.colorWheel.hex);
             _this.redraw();
             windows.closeOpenWindows();
         };
@@ -69,7 +79,7 @@ var DrawingApp = /** @class */ (function () {
             mouseX -= _this.canvas.offsetLeft; // transforms xcoordinates relative to canvas
             mouseY -= _this.canvas.offsetTop; // transforms ycoordinates relative to canvas
             if (_this.paint) {
-                _this.addClick(mouseX, mouseY, true);
+                _this.addClick(mouseX, mouseY, true, colorwheel_js_1.colorWheel.hex);
                 _this.redraw();
             }
             e.preventDefault();
@@ -108,9 +118,10 @@ var DrawingApp = /** @class */ (function () {
         var context = this.context;
         var clickDrag = this.clickDrag;
         var clickY = this.clickY;
+        var color = this.color;
         for (var i = 0; i < clickX.length; ++i) {
             context.beginPath();
-            context.strokeStyle = colorwheel_js_1.colorWheel.hex;
+            context.strokeStyle = color[i];
             if (clickDrag[i] && i) {
                 context.moveTo(clickX[i - 1], clickY[i - 1]);
             }
@@ -122,14 +133,15 @@ var DrawingApp = /** @class */ (function () {
         }
         if (colors.usedColors.indexOf(colorwheel_js_1.colorWheel.hex) == -1) {
             colors.usedColors.unshift(colorwheel_js_1.colorWheel.hex);
-            console.log("usedColors:", colors.usedColors);
+            // console.log("usedColors:", colors.usedColors);
         }
         context.closePath();
     };
-    DrawingApp.prototype.addClick = function (x, y, dragging) {
+    DrawingApp.prototype.addClick = function (x, y, dragging, color) {
         this.clickX.push(x);
         this.clickY.push(y);
         this.clickDrag.push(dragging);
+        this.color.push(color);
     };
     return DrawingApp;
 }());
@@ -137,7 +149,7 @@ exports.DrawingApp = DrawingApp;
 exports.mode = { drawingmode: true };
 document.getElementById('eraserwindow').style.display = 'none';
 eraser.getEraserType();
-document.getElementById('eraserwindow').style.display = 'none';
+document.getElementById('brushwindow').style.display = 'none';
 brush.getBrushType();
 new DrawingApp();
 //# sourceMappingURL=index.js.map

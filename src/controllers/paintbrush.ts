@@ -35,7 +35,7 @@ for (let i = 0; i < brush.length; i++) {
     });
 }
 
-// eraser size
+// paintbrush size
 let slider = document.getElementById("brushslider") as HTMLInputElement;
 slider.oninput = function() {        
     let canvas = document.getElementById('drawCanvas') as HTMLCanvasElement;

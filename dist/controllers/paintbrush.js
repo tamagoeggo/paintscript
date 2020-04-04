@@ -36,12 +36,12 @@ var _loop_1 = function (i) {
 for (var i = 0; i < brush.length; i++) {
     _loop_1(i);
 }
-// eraser size
+// paintbrush size
 var slider = document.getElementById("brushslider");
 slider.oninput = function () {
     var canvas = document.getElementById('drawCanvas');
     var context = canvas.getContext("2d");
-    context.lineWidth = Number(slider.value) || 50;
+    context.lineWidth = Number(slider.value) || 10;
 };
 var brushType = null;
 function getBrushType() {

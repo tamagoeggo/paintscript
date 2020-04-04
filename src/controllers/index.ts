@@ -12,6 +12,12 @@ export class DrawingApp{
     private clickX: number[] = [];
     private clickY: number[] = [];
     private clickDrag: boolean[] = [];
+    private color: string[] = [];
+
+    private clickXHistory: number[] = [];
+    private clickYHistory: number[] = [];
+    private clickDragHistory: boolean[] = [];
+    private colorHistory: string[] = [];
 
     private width: number;
     private height: number;
@@ -57,9 +63,11 @@ export class DrawingApp{
         let context = this.context;
         let clickDrag = this.clickDrag;
         let clickY = this.clickY;
+        let color = this.color;
         for (let i = 0; i < clickX.length; ++i) {
             context.beginPath();
-            context.strokeStyle = colorWheel.hex;
+            context.strokeStyle = color[i];
+
             if (clickDrag[i] && i) {
                 context.moveTo(clickX[i - 1], clickY[i - 1]);
             } else {
@@ -71,16 +79,17 @@ export class DrawingApp{
 
         if(colors.usedColors.indexOf(colorWheel.hex) == -1){            
             colors.usedColors.unshift(colorWheel.hex);
-            console.log("usedColors:", colors.usedColors);
+            // console.log("usedColors:", colors.usedColors);
         }
 
         context.closePath();        
     }
 
-    private addClick(x: number, y: number, dragging: boolean) {
+    private addClick(x: number, y: number,  dragging: boolean, color: string) {
         this.clickX.push(x);
         this.clickY.push(y);
         this.clickDrag.push(dragging);
+        this.color.push(color);
     }
     
     private clearEventHandler = () => {
@@ -93,9 +102,14 @@ export class DrawingApp{
     private releaseEventHandler = () => {
         this.paint = false;
         this.redraw(); // final redraw call
+        this.clickXHistory = this.clickXHistory.concat(this.clickX);
+        this.clickYHistory = this.clickYHistory.concat(this.clickY);
+        this.clickDragHistory = this.clickDragHistory.concat(this.clickDrag);
+        this.colorHistory = this.colorHistory.concat(this.color);
         this.clickX = [];
         this.clickY = [];
         this.clickDrag = [];
+        this.color = [];
         colors.removeUsedColors();
         colors.generateUsedColors(colors.usedColors);
         colors.getColorFromHistory();
@@ -123,7 +137,7 @@ export class DrawingApp{
         mouseY -= this.canvas.offsetTop;
     
         this.paint = true;
-        this.addClick(mouseX, mouseY, false);
+        this.addClick(mouseX, mouseY, false, colorWheel.hex);
         this.redraw();
         windows.closeOpenWindows(); 
     }
@@ -140,7 +154,7 @@ export class DrawingApp{
         mouseY -= this.canvas.offsetTop; // transforms ycoordinates relative to canvas
     
         if (this.paint) {
-            this.addClick(mouseX, mouseY, true); 
+            this.addClick(mouseX, mouseY, true, colorWheel.hex); 
             this.redraw(); 
         }
         e.preventDefault();
