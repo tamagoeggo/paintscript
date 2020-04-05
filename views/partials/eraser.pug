@@ -6,12 +6,12 @@ div#eraserwindow.side-window
     div.eraserpickerwindow
         p.eraser-text Eraser
             div#erasertypescontainer
-                div#normalerasercontainer.erasercontainer                     
-                    p.eraser-name Simple
-                    img(src="/images/normal-eraser-stroke.svg" alt="Eraser stroke" width="117" height="29")
-                div#testerasercontainer.erasercontainer                     
-                    p.eraser-name Simple
-                    img(src="/images/normal-eraser-stroke.svg" alt="Eraser stroke" width="117" height="29")
+                div#normaleraser.erasercontainer                     
+                    p#normaleraser.eraser-name Simple
+                    img#normaleraser(src="/images/normal-eraser-stroke.svg" alt="Eraser stroke" width="117" height="29")
+                div#testeraser.erasercontainer                     
+                    p#testeraser.eraser-name Simple
+                    img#testeraser(src="/images/normal-eraser-stroke.svg" alt="Eraser stroke" width="117" height="29")
             div#erasersizecontainer
                 input.slider#eraserslider(type="range" min="1" max="80" value="10")
                 img.slidertriangle(src="/images/slider.svg" width="27" height="310")

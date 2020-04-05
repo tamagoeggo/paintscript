@@ -3,7 +3,47 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var index_js_1 = require("./index.js");
 var Eraser = /** @class */ (function () {
     function Eraser() {
+        var _this = this;
+        this.size = 10;
+        this.changeEraserSize = function () {
+            var slider = document.getElementById("eraserslider");
+            _this.size = Number(slider.value) || 10;
+        };
+        this.changeEraserType = function (e) {
+            var selectedEraser = document.getElementById(e.target.id);
+            var otherErasers = document.getElementsByClassName("erasercontainer");
+            index_js_1.mode.isdrawingmode = false;
+            for (var i = 0; i < otherErasers.length; i++) {
+                otherErasers[i].style.background = '#A6A6A6';
+            }
+            selectedEraser.style.background = "#4FA2EE";
+            _this.brush = e.target.id;
+        };
+        this.createUserEvents();
     }
+    Object.defineProperty(Eraser.prototype, "getEraserSize", {
+        get: function () {
+            return this.size || 10;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(Eraser.prototype, "getBrush", {
+        get: function () {
+            return this.brush;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Eraser.prototype.createUserEvents = function () {
+        var slider = document.getElementById("eraserslider");
+        slider.addEventListener("input", this.changeEraserSize);
+        var eraser = document.getElementsByClassName("erasercontainer");
+        for (var i = 0; i < eraser.length; i++) {
+            eraser[i].addEventListener("click", this.changeEraserType);
+        }
+    };
     return Eraser;
 }());
 exports.Eraser = Eraser;
@@ -27,30 +67,4 @@ document.getElementById('eraser-button').addEventListener('click', function () {
         document.getElementById('eraser-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
     }
 });
-// eraser selection
-var eraser = document.getElementsByClassName("erasercontainer");
-var _loop_1 = function (i) {
-    eraser[i].addEventListener('click', function () {
-        var selectedEraser = eraser[i];
-        index_js_1.mode.drawingmode = false;
-        for (var i_1 = 0; i_1 < eraser.length; i_1++) {
-            eraser[i_1].style.background = '#A6A6A6';
-        }
-        selectedEraser.style.background = '#4FA2EE';
-    });
-};
-for (var i = 0; i < eraser.length; i++) {
-    _loop_1(i);
-}
-// eraser size
-var slider = document.getElementById("eraserslider");
-slider.oninput = function () {
-    var canvas = document.getElementById('drawCanvas');
-    var context = canvas.getContext("2d");
-    context.lineWidth = Number(slider.value) || 10;
-};
-var eraserType = null;
-function getEraserType() {
-}
-exports.getEraserType = getEraserType;
 //# sourceMappingURL=eraser.js.map

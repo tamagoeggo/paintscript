@@ -7,7 +7,9 @@ function generateUsedColors(usedColors) {
     // default text can be removed 
     if (usedColors.length == 1) {
         var noColorsInHistory = document.getElementById('noColorsInHistory');
-        noColorsInHistory.parentNode.removeChild(noColorsInHistory);
+        if (noColorsInHistory != null) {
+            noColorsInHistory.parentNode.removeChild(noColorsInHistory);
+        }
     }
     while (usedColors.length > 32) {
         usedColors.splice(-1, 1);

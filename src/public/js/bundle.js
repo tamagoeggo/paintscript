@@ -8,7 +8,9 @@ function generateUsedColors(usedColors) {
     // default text can be removed 
     if (usedColors.length == 1) {
         var noColorsInHistory = document.getElementById('noColorsInHistory');
-        noColorsInHistory.parentNode.removeChild(noColorsInHistory);
+        if (noColorsInHistory != null) {
+            noColorsInHistory.parentNode.removeChild(noColorsInHistory);
+        }
     }
     while (usedColors.length > 32) {
         usedColors.splice(-1, 1);
@@ -96,7 +98,47 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var index_js_1 = require("./index.js");
 var Eraser = /** @class */ (function () {
     function Eraser() {
+        var _this = this;
+        this.size = 10;
+        this.changeEraserSize = function () {
+            var slider = document.getElementById("eraserslider");
+            _this.size = Number(slider.value) || 10;
+        };
+        this.changeEraserType = function (e) {
+            var selectedEraser = document.getElementById(e.target.id);
+            var otherErasers = document.getElementsByClassName("erasercontainer");
+            index_js_1.mode.isdrawingmode = false;
+            for (var i = 0; i < otherErasers.length; i++) {
+                otherErasers[i].style.background = '#A6A6A6';
+            }
+            selectedEraser.style.background = "#4FA2EE";
+            _this.brush = e.target.id;
+        };
+        this.createUserEvents();
     }
+    Object.defineProperty(Eraser.prototype, "getEraserSize", {
+        get: function () {
+            return this.size || 10;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(Eraser.prototype, "getBrush", {
+        get: function () {
+            return this.brush;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Eraser.prototype.createUserEvents = function () {
+        var slider = document.getElementById("eraserslider");
+        slider.addEventListener("input", this.changeEraserSize);
+        var eraser = document.getElementsByClassName("erasercontainer");
+        for (var i = 0; i < eraser.length; i++) {
+            eraser[i].addEventListener("click", this.changeEraserType);
+        }
+    };
     return Eraser;
 }());
 exports.Eraser = Eraser;
@@ -120,32 +162,6 @@ document.getElementById('eraser-button').addEventListener('click', function () {
         document.getElementById('eraser-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
     }
 });
-// eraser selection
-var eraser = document.getElementsByClassName("erasercontainer");
-var _loop_1 = function (i) {
-    eraser[i].addEventListener('click', function () {
-        var selectedEraser = eraser[i];
-        index_js_1.mode.drawingmode = false;
-        for (var i_1 = 0; i_1 < eraser.length; i_1++) {
-            eraser[i_1].style.background = '#A6A6A6';
-        }
-        selectedEraser.style.background = '#4FA2EE';
-    });
-};
-for (var i = 0; i < eraser.length; i++) {
-    _loop_1(i);
-}
-// eraser size
-var slider = document.getElementById("eraserslider");
-slider.oninput = function () {
-    var canvas = document.getElementById('drawCanvas');
-    var context = canvas.getContext("2d");
-    context.lineWidth = Number(slider.value) || 10;
-};
-var eraserType = null;
-function getEraserType() {
-}
-exports.getEraserType = getEraserType;
 
 },{"./index.js":4}],4:[function(require,module,exports){
 "use strict";
@@ -159,8 +175,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var colorwheel_js_1 = require("./colorwheel.js");
 var colors = __importStar(require("./colors.js"));
-var eraser = __importStar(require("./eraser.js"));
-var brush = __importStar(require("./paintbrush.js"));
+var eraser_js_1 = require("./eraser.js");
+var paintbrush_js_1 = require("./paintbrush.js");
 var windows = __importStar(require("./window.js"));
 var DrawingApp = /** @class */ (function () {
     function DrawingApp() {
@@ -169,10 +185,14 @@ var DrawingApp = /** @class */ (function () {
         this.clickY = [];
         this.clickDrag = [];
         this.color = [];
+        this.drawingMode = [];
+        this.brushSize = [];
         this.clickXHistory = [];
         this.clickYHistory = [];
         this.clickDragHistory = [];
         this.colorHistory = [];
+        this.drawingModeHistory = [];
+        this.brushSizeHistory = [];
         this.clearEventHandler = function () {
             _this.context.clearRect(0, 0, _this.canvas.width, _this.canvas.height);
             _this.clickX = [];
@@ -186,24 +206,30 @@ var DrawingApp = /** @class */ (function () {
             _this.clickYHistory = _this.clickYHistory.concat(_this.clickY);
             _this.clickDragHistory = _this.clickDragHistory.concat(_this.clickDrag);
             _this.colorHistory = _this.colorHistory.concat(_this.color);
+            _this.drawingModeHistory = _this.drawingModeHistory.concat(_this.drawingMode);
+            _this.brushSizeHistory = _this.brushSizeHistory.concat(_this.brushSize);
             _this.clickX = [];
             _this.clickY = [];
             _this.clickDrag = [];
             _this.color = [];
+            _this.drawingMode = [];
+            _this.brushSize = [];
             colors.removeUsedColors();
             colors.generateUsedColors(colors.usedColors);
             colors.getColorFromHistory();
+            // console.log("paintbrush size: " + paintbrush.getBrushSize);
+            // console.log("paintbrush brush: " + paintbrush.getBrush);
         };
         this.cancelEventHandler = function () {
             _this.paint = false;
         };
         // initial click/touch
         this.pressEventHandler = function (e) {
-            if (exports.mode.drawingmode) {
-                _this.context.globalCompositeOperation = "source-over";
-            }
-            else {
-                _this.context.globalCompositeOperation = "destination-out";
+            var drawingMode = "source-over";
+            var size = _this.paintbrush.getBrushSize;
+            if (!exports.mode.isdrawingmode) {
+                drawingMode = "destination-out";
+                size = _this.eraser.getEraserSize;
             }
             var mouseX = e.changedTouches ?
                 e.changedTouches[0].pageX :
@@ -214,12 +240,18 @@ var DrawingApp = /** @class */ (function () {
             mouseX -= _this.canvas.offsetLeft;
             mouseY -= _this.canvas.offsetTop;
             _this.paint = true;
-            _this.addClick(mouseX, mouseY, false, colorwheel_js_1.colorWheel.hex);
+            _this.addClick(mouseX, mouseY, false, colorwheel_js_1.colorWheel.hex, drawingMode, size);
             _this.redraw();
             windows.closeOpenWindows();
         };
         // moving of cursor/touch while in down state
         this.dragEventHandler = function (e) {
+            var drawingMode = "source-over";
+            var size = _this.paintbrush.getBrushSize;
+            if (!exports.mode.isdrawingmode) {
+                drawingMode = "destination-out";
+                size = _this.eraser.getEraserSize;
+            }
             var mouseX = e.changedTouches ?
                 e.changedTouches[0].pageX :
                 e.pageX;
@@ -229,11 +261,12 @@ var DrawingApp = /** @class */ (function () {
             mouseX -= _this.canvas.offsetLeft; // transforms xcoordinates relative to canvas
             mouseY -= _this.canvas.offsetTop; // transforms ycoordinates relative to canvas
             if (_this.paint) {
-                _this.addClick(mouseX, mouseY, true, colorwheel_js_1.colorWheel.hex);
+                _this.addClick(mouseX, mouseY, true, colorwheel_js_1.colorWheel.hex, drawingMode, size);
                 _this.redraw();
             }
-            e.preventDefault();
         };
+        this.eraser = new eraser_js_1.Eraser();
+        this.paintbrush = new paintbrush_js_1.Paintbrush();
         var canvas = document.getElementById('drawCanvas');
         var context = canvas.getContext("2d");
         context.canvas.width = window.innerWidth;
@@ -241,7 +274,7 @@ var DrawingApp = /** @class */ (function () {
         context.lineCap = 'round';
         context.lineJoin = 'round';
         context.strokeStyle = 'black';
-        context.lineWidth = 10;
+        //context.lineWidth = 10;        
         var width = document.getElementById('drawCanvas').scrollWidth;
         var height = document.getElementById('drawCanvas').scrollHeight;
         this.canvas = canvas;
@@ -260,7 +293,7 @@ var DrawingApp = /** @class */ (function () {
         canvas.addEventListener("touchmove", this.dragEventHandler);
         canvas.addEventListener("touchend", this.releaseEventHandler);
         canvas.addEventListener("touchcancel", this.cancelEventHandler);
-        document.getElementById('clear').addEventListener("click", this.clearEventHandler);
+        //document.getElementById('clear').addEventListener("click", this.clearEventHandler);
     };
     // lets user draw on canvas
     DrawingApp.prototype.redraw = function () {
@@ -269,9 +302,14 @@ var DrawingApp = /** @class */ (function () {
         var clickDrag = this.clickDrag;
         var clickY = this.clickY;
         var color = this.color;
+        var drawingMode = this.drawingMode;
+        var brushSize = this.brushSize;
+        //console.log(brushSize);
         for (var i = 0; i < clickX.length; ++i) {
             context.beginPath();
             context.strokeStyle = color[i];
+            context.globalCompositeOperation = drawingMode[i];
+            context.lineWidth = brushSize[i];
             if (clickDrag[i] && i) {
                 context.moveTo(clickX[i - 1], clickY[i - 1]);
             }
@@ -287,26 +325,72 @@ var DrawingApp = /** @class */ (function () {
         }
         context.closePath();
     };
-    DrawingApp.prototype.addClick = function (x, y, dragging, color) {
+    DrawingApp.prototype.addClick = function (x, y, dragging, color, mode, size) {
         this.clickX.push(x);
         this.clickY.push(y);
         this.clickDrag.push(dragging);
         this.color.push(color);
+        this.drawingMode.push(mode);
+        this.brushSize.push(size);
     };
     return DrawingApp;
 }());
 exports.DrawingApp = DrawingApp;
-exports.mode = { drawingmode: true };
+exports.mode = { isdrawingmode: true };
 document.getElementById('eraserwindow').style.display = 'none';
-eraser.getEraserType();
 document.getElementById('brushwindow').style.display = 'none';
-brush.getBrushType();
 new DrawingApp();
 
 },{"./colors.js":1,"./colorwheel.js":2,"./eraser.js":3,"./paintbrush.js":5,"./window.js":6}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_js_1 = require("./index.js");
+var Paintbrush = /** @class */ (function () {
+    function Paintbrush() {
+        var _this = this;
+        this.size = 10;
+        this.changeBrushSize = function () {
+            var slider = document.getElementById("brushslider");
+            _this.size = Number(slider.value) || 10;
+        };
+        this.changeBrushType = function (e) {
+            var selectedBrush = document.getElementById(e.target.id);
+            var otherBrushes = document.getElementsByClassName("brushcontainer");
+            index_js_1.mode.isdrawingmode = true;
+            for (var i = 0; i < otherBrushes.length; i++) {
+                otherBrushes[i].style.background = '#A6A6A6';
+            }
+            selectedBrush.style.background = "#4FA2EE";
+            _this.brush = e.target.id;
+        };
+        this.createUserEvents();
+    }
+    Object.defineProperty(Paintbrush.prototype, "getBrushSize", {
+        get: function () {
+            return this.size || 10;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(Paintbrush.prototype, "getBrush", {
+        get: function () {
+            return this.brush;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Paintbrush.prototype.createUserEvents = function () {
+        var slider = document.getElementById("brushslider");
+        slider.addEventListener("input", this.changeBrushSize);
+        var brush = document.getElementsByClassName("brushcontainer");
+        for (var i = 0; i < brush.length; i++) {
+            brush[i].addEventListener("click", this.changeBrushType);
+        }
+    };
+    return Paintbrush;
+}());
+exports.Paintbrush = Paintbrush;
 // toggle brush window
 document.getElementById('paintbrush-button').addEventListener('click', function () {
     var brushwindow = document.getElementById("brushwindow");
@@ -327,32 +411,6 @@ document.getElementById('paintbrush-button').addEventListener('click', function 
         document.getElementById('paintbrush-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
     }
 });
-// paintbrush selection
-var brush = document.getElementsByClassName("brushcontainer");
-var _loop_1 = function (i) {
-    brush[i].addEventListener('click', function () {
-        var selectedBrush = brush[i];
-        index_js_1.mode.drawingmode = true;
-        for (var i_1 = 0; i_1 < brush.length; i_1++) {
-            brush[i_1].style.background = '#A6A6A6';
-        }
-        selectedBrush.style.background = '#4FA2EE';
-    });
-};
-for (var i = 0; i < brush.length; i++) {
-    _loop_1(i);
-}
-// paintbrush size
-var slider = document.getElementById("brushslider");
-slider.oninput = function () {
-    var canvas = document.getElementById('drawCanvas');
-    var context = canvas.getContext("2d");
-    context.lineWidth = Number(slider.value) || 10;
-};
-var brushType = null;
-function getBrushType() {
-}
-exports.getBrushType = getBrushType;
 
 },{"./index.js":4}],6:[function(require,module,exports){
 "use strict";

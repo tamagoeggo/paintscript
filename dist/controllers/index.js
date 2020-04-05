@@ -9,8 +9,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var colorwheel_js_1 = require("./colorwheel.js");
 var colors = __importStar(require("./colors.js"));
-var eraser = __importStar(require("./eraser.js"));
-var brush = __importStar(require("./paintbrush.js"));
+var eraser_js_1 = require("./eraser.js");
+var paintbrush_js_1 = require("./paintbrush.js");
 var windows = __importStar(require("./window.js"));
 var DrawingApp = /** @class */ (function () {
     function DrawingApp() {
@@ -19,10 +19,14 @@ var DrawingApp = /** @class */ (function () {
         this.clickY = [];
         this.clickDrag = [];
         this.color = [];
+        this.drawingMode = [];
+        this.brushSize = [];
         this.clickXHistory = [];
         this.clickYHistory = [];
         this.clickDragHistory = [];
         this.colorHistory = [];
+        this.drawingModeHistory = [];
+        this.brushSizeHistory = [];
         this.clearEventHandler = function () {
             _this.context.clearRect(0, 0, _this.canvas.width, _this.canvas.height);
             _this.clickX = [];
@@ -36,24 +40,30 @@ var DrawingApp = /** @class */ (function () {
             _this.clickYHistory = _this.clickYHistory.concat(_this.clickY);
             _this.clickDragHistory = _this.clickDragHistory.concat(_this.clickDrag);
             _this.colorHistory = _this.colorHistory.concat(_this.color);
+            _this.drawingModeHistory = _this.drawingModeHistory.concat(_this.drawingMode);
+            _this.brushSizeHistory = _this.brushSizeHistory.concat(_this.brushSize);
             _this.clickX = [];
             _this.clickY = [];
             _this.clickDrag = [];
             _this.color = [];
+            _this.drawingMode = [];
+            _this.brushSize = [];
             colors.removeUsedColors();
             colors.generateUsedColors(colors.usedColors);
             colors.getColorFromHistory();
+            // console.log("paintbrush size: " + paintbrush.getBrushSize);
+            // console.log("paintbrush brush: " + paintbrush.getBrush);
         };
         this.cancelEventHandler = function () {
             _this.paint = false;
         };
         // initial click/touch
         this.pressEventHandler = function (e) {
-            if (exports.mode.drawingmode) {
-                _this.context.globalCompositeOperation = "source-over";
-            }
-            else {
-                _this.context.globalCompositeOperation = "destination-out";
+            var drawingMode = "source-over";
+            var size = _this.paintbrush.getBrushSize;
+            if (!exports.mode.isdrawingmode) {
+                drawingMode = "destination-out";
+                size = _this.eraser.getEraserSize;
             }
             var mouseX = e.changedTouches ?
                 e.changedTouches[0].pageX :
@@ -64,12 +74,18 @@ var DrawingApp = /** @class */ (function () {
             mouseX -= _this.canvas.offsetLeft;
             mouseY -= _this.canvas.offsetTop;
             _this.paint = true;
-            _this.addClick(mouseX, mouseY, false, colorwheel_js_1.colorWheel.hex);
+            _this.addClick(mouseX, mouseY, false, colorwheel_js_1.colorWheel.hex, drawingMode, size);
             _this.redraw();
             windows.closeOpenWindows();
         };
         // moving of cursor/touch while in down state
         this.dragEventHandler = function (e) {
+            var drawingMode = "source-over";
+            var size = _this.paintbrush.getBrushSize;
+            if (!exports.mode.isdrawingmode) {
+                drawingMode = "destination-out";
+                size = _this.eraser.getEraserSize;
+            }
             var mouseX = e.changedTouches ?
                 e.changedTouches[0].pageX :
                 e.pageX;
@@ -79,11 +95,12 @@ var DrawingApp = /** @class */ (function () {
             mouseX -= _this.canvas.offsetLeft; // transforms xcoordinates relative to canvas
             mouseY -= _this.canvas.offsetTop; // transforms ycoordinates relative to canvas
             if (_this.paint) {
-                _this.addClick(mouseX, mouseY, true, colorwheel_js_1.colorWheel.hex);
+                _this.addClick(mouseX, mouseY, true, colorwheel_js_1.colorWheel.hex, drawingMode, size);
                 _this.redraw();
             }
-            e.preventDefault();
         };
+        this.eraser = new eraser_js_1.Eraser();
+        this.paintbrush = new paintbrush_js_1.Paintbrush();
         var canvas = document.getElementById('drawCanvas');
         var context = canvas.getContext("2d");
         context.canvas.width = window.innerWidth;
@@ -91,7 +108,7 @@ var DrawingApp = /** @class */ (function () {
         context.lineCap = 'round';
         context.lineJoin = 'round';
         context.strokeStyle = 'black';
-        context.lineWidth = 10;
+        //context.lineWidth = 10;        
         var width = document.getElementById('drawCanvas').scrollWidth;
         var height = document.getElementById('drawCanvas').scrollHeight;
         this.canvas = canvas;
@@ -110,7 +127,7 @@ var DrawingApp = /** @class */ (function () {
         canvas.addEventListener("touchmove", this.dragEventHandler);
         canvas.addEventListener("touchend", this.releaseEventHandler);
         canvas.addEventListener("touchcancel", this.cancelEventHandler);
-        document.getElementById('clear').addEventListener("click", this.clearEventHandler);
+        //document.getElementById('clear').addEventListener("click", this.clearEventHandler);
     };
     // lets user draw on canvas
     DrawingApp.prototype.redraw = function () {
@@ -119,9 +136,14 @@ var DrawingApp = /** @class */ (function () {
         var clickDrag = this.clickDrag;
         var clickY = this.clickY;
         var color = this.color;
+        var drawingMode = this.drawingMode;
+        var brushSize = this.brushSize;
+        //console.log(brushSize);
         for (var i = 0; i < clickX.length; ++i) {
             context.beginPath();
             context.strokeStyle = color[i];
+            context.globalCompositeOperation = drawingMode[i];
+            context.lineWidth = brushSize[i];
             if (clickDrag[i] && i) {
                 context.moveTo(clickX[i - 1], clickY[i - 1]);
             }
@@ -137,19 +159,19 @@ var DrawingApp = /** @class */ (function () {
         }
         context.closePath();
     };
-    DrawingApp.prototype.addClick = function (x, y, dragging, color) {
+    DrawingApp.prototype.addClick = function (x, y, dragging, color, mode, size) {
         this.clickX.push(x);
         this.clickY.push(y);
         this.clickDrag.push(dragging);
         this.color.push(color);
+        this.drawingMode.push(mode);
+        this.brushSize.push(size);
     };
     return DrawingApp;
 }());
 exports.DrawingApp = DrawingApp;
-exports.mode = { drawingmode: true };
+exports.mode = { isdrawingmode: true };
 document.getElementById('eraserwindow').style.display = 'none';
-eraser.getEraserType();
 document.getElementById('brushwindow').style.display = 'none';
-brush.getBrushType();
 new DrawingApp();
 //# sourceMappingURL=index.js.map

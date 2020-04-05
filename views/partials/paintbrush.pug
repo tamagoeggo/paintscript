@@ -6,12 +6,12 @@ div#brushwindow.side-window
     div.brushpickerwindow
         p.brush-text Brushes
             div#brushtypescontainer
-                div#normalbrushcontainer.brushcontainer                     
-                    p.brush-name Simple
-                    img(src="/images/normal-eraser-stroke.svg" alt="Eraser stroke" width="117" height="29")
-                div#testpaintcontainer.brushcontainer                     
-                    p.brush-name Simple
-                    img(src="/images/normal-eraser-stroke.svg" alt="Eraser stroke" width="117" height="29")
+                div#normalbrush.brushcontainer                     
+                    p#normalbrush.brush-name Simple
+                    img#normalbrush(src="/images/normal-eraser-stroke.svg" alt="Eraser stroke" width="117" height="29")
+                div#testbrush.brushcontainer                     
+                    p#testbrush.brush-name Simple
+                    img#testbrush(src="/images/normal-eraser-stroke.svg" alt="Eraser stroke" width="117" height="29")
             div#brushsizecontainer
                 input.slider#brushslider(type="range" min="1" max="80" value="10")
                 img.slidertriangle(src="/images/slider.svg" width="27" height="310")

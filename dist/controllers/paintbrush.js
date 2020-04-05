@@ -1,6 +1,52 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_js_1 = require("./index.js");
+var Paintbrush = /** @class */ (function () {
+    function Paintbrush() {
+        var _this = this;
+        this.size = 10;
+        this.changeBrushSize = function () {
+            var slider = document.getElementById("brushslider");
+            _this.size = Number(slider.value) || 10;
+        };
+        this.changeBrushType = function (e) {
+            var selectedBrush = document.getElementById(e.target.id);
+            var otherBrushes = document.getElementsByClassName("brushcontainer");
+            index_js_1.mode.isdrawingmode = true;
+            for (var i = 0; i < otherBrushes.length; i++) {
+                otherBrushes[i].style.background = '#A6A6A6';
+            }
+            selectedBrush.style.background = "#4FA2EE";
+            _this.brush = e.target.id;
+        };
+        this.createUserEvents();
+    }
+    Object.defineProperty(Paintbrush.prototype, "getBrushSize", {
+        get: function () {
+            return this.size || 10;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(Paintbrush.prototype, "getBrush", {
+        get: function () {
+            return this.brush;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Paintbrush.prototype.createUserEvents = function () {
+        var slider = document.getElementById("brushslider");
+        slider.addEventListener("input", this.changeBrushSize);
+        var brush = document.getElementsByClassName("brushcontainer");
+        for (var i = 0; i < brush.length; i++) {
+            brush[i].addEventListener("click", this.changeBrushType);
+        }
+    };
+    return Paintbrush;
+}());
+exports.Paintbrush = Paintbrush;
 // toggle brush window
 document.getElementById('paintbrush-button').addEventListener('click', function () {
     var brushwindow = document.getElementById("brushwindow");
@@ -21,30 +67,4 @@ document.getElementById('paintbrush-button').addEventListener('click', function 
         document.getElementById('paintbrush-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
     }
 });
-// paintbrush selection
-var brush = document.getElementsByClassName("brushcontainer");
-var _loop_1 = function (i) {
-    brush[i].addEventListener('click', function () {
-        var selectedBrush = brush[i];
-        index_js_1.mode.drawingmode = true;
-        for (var i_1 = 0; i_1 < brush.length; i_1++) {
-            brush[i_1].style.background = '#A6A6A6';
-        }
-        selectedBrush.style.background = '#4FA2EE';
-    });
-};
-for (var i = 0; i < brush.length; i++) {
-    _loop_1(i);
-}
-// paintbrush size
-var slider = document.getElementById("brushslider");
-slider.oninput = function () {
-    var canvas = document.getElementById('drawCanvas');
-    var context = canvas.getContext("2d");
-    context.lineWidth = Number(slider.value) || 10;
-};
-var brushType = null;
-function getBrushType() {
-}
-exports.getBrushType = getBrushType;
 //# sourceMappingURL=paintbrush.js.map

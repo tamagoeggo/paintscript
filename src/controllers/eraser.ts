@@ -1,8 +1,48 @@
 import { mode } from "./index.js";
 
 export class Eraser{
-    private size: number;
+    private size: number = 10;
+    private brush: string;
     
+    public get getEraserSize(): number {
+        return this.size || 10;
+    };
+
+    public get getBrush(): string {
+        return this.brush;
+    }
+
+    constructor(){     
+        this.createUserEvents();
+    }
+
+    public createUserEvents() {
+        let slider = document.getElementById("eraserslider") as HTMLInputElement;
+        slider.addEventListener("input", this.changeEraserSize);
+
+        let eraser = document.getElementsByClassName("erasercontainer");
+        for (let i = 0; i < eraser.length; i++) {  
+            (<HTMLElement>eraser[i]).addEventListener("click", this.changeEraserType);
+        }
+    }
+
+    private changeEraserSize = () => {
+        let slider = document.getElementById("eraserslider") as HTMLInputElement;
+        this.size = Number(slider.value) || 10;
+    }
+
+    private changeEraserType = (e) => {
+        let selectedEraser = document.getElementById(e.target.id);
+        let otherErasers = document.getElementsByClassName("erasercontainer");
+        mode.isdrawingmode = false;
+
+        for (let i = 0; i < otherErasers.length; i++){
+            (<HTMLElement>otherErasers[i]).style.background = '#A6A6A6';
+        }
+        selectedEraser.style.background = "#4FA2EE";
+        this.brush = e.target.id;
+    }
+
 }
 
 // toggle eraser window
@@ -25,29 +65,3 @@ document.getElementById('eraser-button').addEventListener('click', () => {
         document.getElementById('eraser-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
     }
 });
-
-
-// eraser selection
-let eraser = document.getElementsByClassName("erasercontainer");
-for (let i = 0; i < eraser.length; i++) {        
-    eraser[i].addEventListener('click', () => {
-        let selectedEraser = eraser[i];
-        mode.drawingmode = false;
-        for (let i = 0; i < eraser.length; i++){
-            (<HTMLElement>eraser[i]).style.background = '#A6A6A6';
-        }
-        (<HTMLElement>selectedEraser).style.background = '#4FA2EE';
-    });
-}
-
-// eraser size
-let slider = document.getElementById("eraserslider") as HTMLInputElement;
-slider.oninput = function() {        
-    let canvas = document.getElementById('drawCanvas') as HTMLCanvasElement;
-    let context = canvas.getContext("2d");
-    context.lineWidth = Number(slider.value) || 10;
-}
-
-let eraserType = null;
-export function getEraserType(){
-}

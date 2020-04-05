@@ -1,5 +1,50 @@
 import { mode } from "./index.js";
 
+export class Paintbrush{
+    private size: number = 10;
+    private brush: string;
+    
+    public get getBrushSize(): number {
+        return this.size || 10;
+    };
+
+    public get getBrush(): string {
+        return this.brush;
+    }
+
+    constructor(){     
+        this.createUserEvents();
+    }
+
+    public createUserEvents() {
+        let slider = document.getElementById("brushslider") as HTMLInputElement;
+        slider.addEventListener("input", this.changeBrushSize);
+
+        let brush = document.getElementsByClassName("brushcontainer");
+        for (let i = 0; i < brush.length; i++) {  
+            (<HTMLElement>brush[i]).addEventListener("click", this.changeBrushType);
+        }
+    }
+
+    private changeBrushSize = () => {
+        let slider = document.getElementById("brushslider") as HTMLInputElement;
+        this.size = Number(slider.value) || 10;
+    }
+
+    private changeBrushType = (e) => {
+        let selectedBrush = document.getElementById(e.target.id);
+        let otherBrushes = document.getElementsByClassName("brushcontainer");
+        mode.isdrawingmode = true;
+
+        for (let i = 0; i < otherBrushes.length; i++){
+            (<HTMLElement>otherBrushes[i]).style.background = '#A6A6A6';
+        }
+        selectedBrush.style.background = "#4FA2EE";
+        this.brush = e.target.id;
+    }
+
+}
+
 // toggle brush window
 document.getElementById('paintbrush-button').addEventListener('click', () => {
     let brushwindow = document.getElementById("brushwindow");
@@ -20,29 +65,3 @@ document.getElementById('paintbrush-button').addEventListener('click', () => {
         document.getElementById('paintbrush-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
     }
 });
-
-
-// paintbrush selection
-let brush = document.getElementsByClassName("brushcontainer");
-for (let i = 0; i < brush.length; i++) {        
-    brush[i].addEventListener('click', () => {
-        let selectedBrush = brush[i];
-        mode.drawingmode = true;
-        for (let i = 0; i < brush.length; i++){
-            (<HTMLElement>brush[i]).style.background = '#A6A6A6';
-        }
-        (<HTMLElement>selectedBrush).style.background = '#4FA2EE';
-    });
-}
-
-// paintbrush size
-let slider = document.getElementById("brushslider") as HTMLInputElement;
-slider.oninput = function() {        
-    let canvas = document.getElementById('drawCanvas') as HTMLCanvasElement;
-    let context = canvas.getContext("2d");
-    context.lineWidth = Number(slider.value) || 10;
-}
-
-let brushType = null;
-export function getBrushType(){
-}
