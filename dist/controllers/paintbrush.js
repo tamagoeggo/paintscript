@@ -18,7 +18,14 @@ var Paintbrush = /** @class */ (function () {
             }
             selectedBrush.style.background = "#4FA2EE";
             _this.brush = e.target.id;
+            var erasers = document.getElementsByClassName("erasercontainer");
+            for (var i = 0; i < erasers.length; i++) {
+                erasers[i].style.background = '#A6A6A6';
+            }
+            document.getElementById("paintbrush").src = "/images/paintbrush-button-active.svg";
+            document.getElementById("eraser").src = "/images/eraser-button.svg";
         };
+        document.getElementById("normalbrush").style.background = '#4FA2EE';
         this.createUserEvents();
     }
     Object.defineProperty(Paintbrush.prototype, "getBrushSize", {
@@ -47,24 +54,4 @@ var Paintbrush = /** @class */ (function () {
     return Paintbrush;
 }());
 exports.Paintbrush = Paintbrush;
-// toggle brush window
-document.getElementById('paintbrush-button').addEventListener('click', function () {
-    var brushwindow = document.getElementById("brushwindow");
-    if (brushwindow.style.display !== 'none') {
-        brushwindow.style.display = 'none';
-        document.getElementById('paintbrush-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-    }
-    else {
-        var openWindows = document.getElementsByClassName("side-window");
-        for (var i = 0; i < openWindows.length; i++) {
-            openWindows[i].style.display = 'none';
-        }
-        var pressedButtons = document.getElementsByClassName('side-buttons');
-        for (var i = 0; i < pressedButtons.length; i++) {
-            pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-        }
-        brushwindow.style.display = 'block';
-        document.getElementById('paintbrush-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
-    }
-});
 //# sourceMappingURL=paintbrush.js.map

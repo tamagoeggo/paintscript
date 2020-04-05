@@ -22,6 +22,7 @@ export var colorWheel = new ReinventedColorWheel({
     // handler
     onChange: function (color) {
       // the only argument is the ReinventedColorWheel instance itself.
-      console.log("hsv:", color.hsv[0], color.hsv[1], color.hsv[2]);
+      //console.log("hsv:", color.hsv[0], color.hsv[1], color.hsv[2]);
+      document.getElementById('color-dot').style.background = color.hex;
     },
 });

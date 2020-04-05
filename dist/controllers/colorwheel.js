@@ -22,7 +22,8 @@ exports.colorWheel = new reinvented_color_wheel_1.default({
     // handler
     onChange: function (color) {
         // the only argument is the ReinventedColorWheel instance itself.
-        console.log("hsv:", color.hsv[0], color.hsv[1], color.hsv[2]);
+        //console.log("hsv:", color.hsv[0], color.hsv[1], color.hsv[2]);
+        document.getElementById('color-dot').style.background = color.hex;
     },
 });
 //# sourceMappingURL=colorwheel.js.map

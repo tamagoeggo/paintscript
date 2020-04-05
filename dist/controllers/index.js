@@ -76,7 +76,7 @@ var DrawingApp = /** @class */ (function () {
             _this.paint = true;
             _this.addClick(mouseX, mouseY, false, colorwheel_js_1.colorWheel.hex, drawingMode, size);
             _this.redraw();
-            windows.closeOpenWindows();
+            windows.closeWindows();
         };
         // moving of cursor/touch while in down state
         this.dragEventHandler = function (e) {

@@ -42,26 +42,6 @@ function getColorFromHistory() {
     }
 }
 exports.getColorFromHistory = getColorFromHistory;
-// toggle color window
-document.getElementById('color-button').addEventListener('click', function () {
-    var colorWindow = document.getElementById("colourwindow");
-    if (colorWindow.style.display !== 'none') {
-        colorWindow.style.display = 'none';
-        document.getElementById('color-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-    }
-    else {
-        var openWindows = document.getElementsByClassName("side-window");
-        for (var i = 0; i < openWindows.length; i++) {
-            openWindows[i].style.display = 'none';
-        }
-        var pressedButtons = document.getElementsByClassName('side-buttons');
-        for (var i = 0; i < pressedButtons.length; i++) {
-            pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-        }
-        colorWindow.style.display = 'block';
-        document.getElementById('color-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
-    }
-});
 
 },{"./colorwheel.js":2}],2:[function(require,module,exports){
 "use strict";
@@ -88,7 +68,8 @@ exports.colorWheel = new reinvented_color_wheel_1.default({
     // handler
     onChange: function (color) {
         // the only argument is the ReinventedColorWheel instance itself.
-        console.log("hsv:", color.hsv[0], color.hsv[1], color.hsv[2]);
+        //console.log("hsv:", color.hsv[0], color.hsv[1], color.hsv[2]);
+        document.getElementById('color-dot').style.background = color.hex;
     },
 });
 
@@ -113,6 +94,12 @@ var Eraser = /** @class */ (function () {
             }
             selectedEraser.style.background = "#4FA2EE";
             _this.brush = e.target.id;
+            var brushes = document.getElementsByClassName("brushcontainer");
+            for (var i = 0; i < brushes.length; i++) {
+                brushes[i].style.background = '#A6A6A6';
+            }
+            document.getElementById("eraser").src = "/images/eraser-button-active.svg";
+            document.getElementById("paintbrush").src = "/images/paintbrush-button.svg";
         };
         this.createUserEvents();
     }
@@ -142,26 +129,6 @@ var Eraser = /** @class */ (function () {
     return Eraser;
 }());
 exports.Eraser = Eraser;
-// toggle eraser window
-document.getElementById('eraser-button').addEventListener('click', function () {
-    var eraserwindow = document.getElementById("eraserwindow");
-    if (eraserwindow.style.display !== 'none') {
-        eraserwindow.style.display = 'none';
-        document.getElementById('eraser-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-    }
-    else {
-        var openWindows = document.getElementsByClassName("side-window");
-        for (var i = 0; i < openWindows.length; i++) {
-            openWindows[i].style.display = 'none';
-        }
-        var pressedButtons = document.getElementsByClassName('side-buttons');
-        for (var i = 0; i < pressedButtons.length; i++) {
-            pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-        }
-        eraserwindow.style.display = 'block';
-        document.getElementById('eraser-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
-    }
-});
 
 },{"./index.js":4}],4:[function(require,module,exports){
 "use strict";
@@ -242,7 +209,7 @@ var DrawingApp = /** @class */ (function () {
             _this.paint = true;
             _this.addClick(mouseX, mouseY, false, colorwheel_js_1.colorWheel.hex, drawingMode, size);
             _this.redraw();
-            windows.closeOpenWindows();
+            windows.closeWindows();
         };
         // moving of cursor/touch while in down state
         this.dragEventHandler = function (e) {
@@ -362,7 +329,14 @@ var Paintbrush = /** @class */ (function () {
             }
             selectedBrush.style.background = "#4FA2EE";
             _this.brush = e.target.id;
+            var erasers = document.getElementsByClassName("erasercontainer");
+            for (var i = 0; i < erasers.length; i++) {
+                erasers[i].style.background = '#A6A6A6';
+            }
+            document.getElementById("paintbrush").src = "/images/paintbrush-button-active.svg";
+            document.getElementById("eraser").src = "/images/eraser-button.svg";
         };
+        document.getElementById("normalbrush").style.background = '#4FA2EE';
         this.createUserEvents();
     }
     Object.defineProperty(Paintbrush.prototype, "getBrushSize", {
@@ -391,31 +365,11 @@ var Paintbrush = /** @class */ (function () {
     return Paintbrush;
 }());
 exports.Paintbrush = Paintbrush;
-// toggle brush window
-document.getElementById('paintbrush-button').addEventListener('click', function () {
-    var brushwindow = document.getElementById("brushwindow");
-    if (brushwindow.style.display !== 'none') {
-        brushwindow.style.display = 'none';
-        document.getElementById('paintbrush-button').style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-    }
-    else {
-        var openWindows = document.getElementsByClassName("side-window");
-        for (var i = 0; i < openWindows.length; i++) {
-            openWindows[i].style.display = 'none';
-        }
-        var pressedButtons = document.getElementsByClassName('side-buttons');
-        for (var i = 0; i < pressedButtons.length; i++) {
-            pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-        }
-        brushwindow.style.display = 'block';
-        document.getElementById('paintbrush-button').style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
-    }
-});
 
 },{"./index.js":4}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function closeOpenWindows() {
+function closeWindows() {
     var openWindows = document.getElementsByClassName('side-window');
     for (var i = 0; i < openWindows.length; i++) {
         openWindows[i].style.display = 'none';
@@ -425,7 +379,44 @@ function closeOpenWindows() {
         pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
     }
 }
-exports.closeOpenWindows = closeOpenWindows;
+exports.closeWindows = closeWindows;
+// toggle windows 
+var sideButtons = document.getElementsByClassName('side-buttons');
+var windowId = '';
+var _loop_1 = function (i) {
+    sideButtons[i].addEventListener('click', function () {
+        var clickedButton = sideButtons[i];
+        if (clickedButton.id == 'color-button') {
+            windowId = 'colourwindow';
+        }
+        else if (clickedButton.id == 'paintbrush-button') {
+            windowId = 'brushwindow';
+        }
+        else if (clickedButton.id == 'eraser-button') {
+            windowId = 'eraserwindow';
+        }
+        var selectedWindow = document.getElementById(windowId);
+        if (selectedWindow.style.display !== 'none') {
+            selectedWindow.style.display = 'none';
+            document.getElementById(clickedButton.id).style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+        }
+        else {
+            var openWindows = document.getElementsByClassName("side-window");
+            for (var i_1 = 0; i_1 < openWindows.length; i_1++) {
+                openWindows[i_1].style.display = 'none';
+            }
+            var pressedButtons = document.getElementsByClassName('side-buttons');
+            for (var i_2 = 0; i_2 < pressedButtons.length; i_2++) {
+                pressedButtons[i_2].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
+            }
+            selectedWindow.style.display = 'block';
+            document.getElementById(clickedButton.id).style.boxShadow = 'inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)';
+        }
+    });
+};
+for (var i = 0; i < sideButtons.length; i++) {
+    _loop_1(i);
+}
 
 },{}],7:[function(require,module,exports){
 'use strict';

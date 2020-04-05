@@ -164,7 +164,7 @@ export class DrawingApp{
         this.paint = true;
         this.addClick(mouseX, mouseY, false, colorWheel.hex, drawingMode, size);
         this.redraw();
-        windows.closeOpenWindows(); 
+        windows.closeWindows(); 
     }
 
     // moving of cursor/touch while in down state
@@ -192,7 +192,7 @@ export class DrawingApp{
     }
 }
 
-export const mode = {isdrawingmode: true}
+export const mode = { isdrawingmode: true };
 
 document.getElementById('eraserwindow').style.display = 'none';
 document.getElementById('brushwindow').style.display = 'none';

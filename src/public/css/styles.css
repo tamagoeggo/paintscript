@@ -110,10 +110,11 @@ button{
     background: #FFFFFF;
 }
 
-.color-dot{
+#color-dot{
     height: 20px;
     width: 20px;
     border-radius: 50%;
+    background-color: #0086ff;
 }
 
 /* ========================== Color window ========================== */
@@ -308,7 +309,7 @@ button{
     background: #8FC4F5;
 }
 
-/* ========================== Eraser window ========================== */
+/* ========================== Brush window ========================== */
 
 .brushwindowarrowcontainer{
     position: fixed;
@@ -316,6 +317,8 @@ button{
     margin-top: 120px;
     margin-left: 70px;
 }
+
+
 
 
 
