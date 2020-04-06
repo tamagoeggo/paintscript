@@ -110,13 +110,18 @@ button{
     align-items: center;
 }
 
-.side-buttons:active{
+/* .side-buttons:active{
     background: #EFEFEF !important;
     box-shadow: inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5);
-}
+} */
 
-.side-buttons:hover{
+/* .side-buttons:hover{
     background: #FFFFFF;
+} */
+
+.pressed{
+    background: #EFEFEF;
+    box-shadow: inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5);
 }
 
 #color-dot{
@@ -124,6 +129,7 @@ button{
     width: 20px;
     border-radius: 50%;
     background-color: #0086ff;
+    border: 1px solid #FFFFFF;
 }
 
 /* ========================== Color window ========================== */

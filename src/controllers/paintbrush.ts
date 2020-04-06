@@ -48,6 +48,8 @@ export class Paintbrush{
             (<HTMLElement>erasers[i]).style.background = '#A6A6A6';
         }
 
+        (<HTMLImageElement>document.getElementById("paintbrush")).classList.add('active');
+        (<HTMLImageElement>document.getElementById("eraser")).classList.remove('active');
         (<HTMLImageElement>document.getElementById("paintbrush")).src = "/images/paintbrush-button-active.svg";
         (<HTMLImageElement>document.getElementById("eraser")).src = "/images/eraser-button.svg";
     }

@@ -22,6 +22,8 @@ var Eraser = /** @class */ (function () {
             for (var i = 0; i < brushes.length; i++) {
                 brushes[i].style.background = '#A6A6A6';
             }
+            document.getElementById("eraser").classList.add('active');
+            document.getElementById("paintbrush").classList.remove('active');
             document.getElementById("eraser").src = "/images/eraser-button-active.svg";
             document.getElementById("paintbrush").src = "/images/paintbrush-button.svg";
         };

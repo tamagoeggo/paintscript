@@ -36,6 +36,8 @@
     "pug": "^2.0.4",
     "reinvented-color-wheel": "^0.2.9",
     "run": "^1.4.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "kind-of": ">=6.0.3",
+    "acorn": ">=5.7.4"
   }
 }
