@@ -18,12 +18,21 @@ export class DrawingApp{
     private drawingMode: string[] = [];
     private brushSize: number[] = [];
 
-    private clickXHistory: number[] = [];
-    private clickYHistory: number[] = [];
-    private clickDragHistory: boolean[] = [];
-    private colorHistory: string[] = [];
-    private drawingModeHistory: string[] = [];
-    private brushSizeHistory: number[] = [];
+    // undo
+    private clickXHistory: number[][] = [];
+    private clickYHistory: number[][] = [];
+    private clickDragHistory: boolean[][] = [];
+    private colorHistory: string[][] = [];
+    private drawingModeHistory: string[][] = [];
+    private brushSizeHistory: number[][] = [];
+
+    // redo
+    private clickXRedo: number[][] = [];
+    private clickYRedo: number[][] = [];
+    private clickDragRedo: boolean[][] = [];
+    private colorRedo: string[][] = [];
+    private drawingModeRedo: string[][] = [];
+    private brushSizeRedo: number[][] = [];
 
     constructor(){
         this.eraser =  new Eraser();
@@ -59,14 +68,17 @@ export class DrawingApp{
         canvas.addEventListener("touchmove", this.dragEventHandler);
         canvas.addEventListener("touchend", this.releaseEventHandler);
         canvas.addEventListener("touchcancel", this.cancelEventHandler);
+
+        document.getElementById('undo').addEventListener("click", this.undo);
+        document.getElementById('redo').addEventListener("click", this.redo);
     
         //document.getElementById('clear').addEventListener("click", this.clearEventHandler);
     }
 
     // lets user draw on canvas
     private redraw() {
-        let clickX = this.clickX;
         let context = this.context;
+        let clickX = this.clickX;        
         let clickDrag = this.clickDrag;
         let clickY = this.clickY;
         let color = this.color;
@@ -107,42 +119,41 @@ export class DrawingApp{
         this.brushSize.push(size);
     }
     
-    private clearEventHandler = () => {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.clickX = [];
-        this.clickY = [];
-        this.clickDrag = [];
+    private addClickHistory(x: number[], y: number[],  dragging: boolean[], color: string[], mode: string[], size: number[]) {
+        this.clickXHistory.push(x);
+        this.clickYHistory.push(y);
+        this.clickDragHistory.push(dragging);
+        this.colorHistory.push(color);
+        this.drawingModeHistory.push(mode);
+        this.brushSizeHistory.push(size);
     }
-    
-    private releaseEventHandler = () => {
-        this.paint = false;
-        this.redraw(); // final redraw call
-        this.clickXHistory = this.clickXHistory.concat(this.clickX);
-        this.clickYHistory = this.clickYHistory.concat(this.clickY);
-        this.clickDragHistory = this.clickDragHistory.concat(this.clickDrag);
-        this.colorHistory = this.colorHistory.concat(this.color);
-        this.drawingModeHistory = this.drawingModeHistory.concat(this.drawingMode);
-        this.brushSizeHistory = this.brushSizeHistory.concat(this.brushSize);
-       
+
+    private clearCurrentClicks = () => {
         this.clickX = [];
         this.clickY = [];
         this.clickDrag = [];
         this.color = [];
         this.drawingMode = [];
         this.brushSize = [];
+    }
+
+    private cancelEventHandler = () => {
+        this.paint = false;
+    }
+    
+    private releaseEventHandler = () => {
+        this.paint = false;
+        this.redraw(); // final redraw call
+        this.addClickHistory(this.clickX, this.clickY, this.clickDrag, this.color, this.drawingMode, this.brushSize);
+        this.clearCurrentClicks();
         
         colors.removeUsedColors();
         colors.generateUsedColors(colors.usedColors);
         colors.getColorFromHistory();
 
-        // console.log("paintbrush size: " + paintbrush.getBrushSize);
-        // console.log("paintbrush brush: " + paintbrush.getBrush);
+        this.toggleUndoRedo();
     }
     
-    private cancelEventHandler = () => {
-        this.paint = false;
-    }
-
     // initial click/touch
     private pressEventHandler = (e: MouseEvent | TouchEvent) => {
         let drawingMode = "source-over";
@@ -165,6 +176,17 @@ export class DrawingApp{
         this.addClick(mouseX, mouseY, false, colorWheel.hex, drawingMode, size);
         this.redraw();
         windows.closeWindows(); 
+
+        if(this.clickXRedo != [] &&
+        this.clickYRedo != [] &&
+        this.clickDragRedo != [] &&
+        this.colorRedo != [] &&
+        this.drawingModeRedo != [] &&
+        this.brushSizeRedo != []){
+            this.clearRedo();
+        }     
+        
+        this.toggleUndoRedo();
     }
 
     // moving of cursor/touch while in down state
@@ -189,6 +211,95 @@ export class DrawingApp{
             this.addClick(mouseX, mouseY, true, colorWheel.hex, drawingMode, size); 
             this.redraw(); 
         }
+    }
+
+    private undo = () => {
+        let lastClickX = this.clickXHistory.pop();
+        let lastClickY = this.clickYHistory.pop();
+        let lastClickDrag = this.clickDragHistory.pop();
+        let lastColor = this.colorHistory.pop();
+        let lastDrawingMode = this.drawingModeHistory.pop();
+        let lastBrushSize = this.brushSizeHistory.pop();
+
+        // move last stroke to redo to save for later
+        if (lastClickX != undefined) {
+            this.clickXRedo.push(lastClickX);
+            this.clickYRedo.push(lastClickY);
+            this.clickDragRedo.push(lastClickDrag);
+            this.colorRedo.push(lastColor);
+            this.drawingModeRedo.push(lastDrawingMode);
+            this.brushSizeRedo.push(lastBrushSize);
+
+            this.clickX = [].concat.apply([], this.clickXHistory);
+            this.clickY = [].concat.apply([], this.clickYHistory);
+            this.clickDrag = [].concat.apply([], this.clickDragHistory);
+            this.color = [].concat.apply([], this.colorHistory);
+            this.drawingMode = [].concat.apply([], this.drawingModeHistory);
+            this.brushSize = [].concat.apply([], this.brushSizeHistory);
+
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+            this.redraw();
+        }
+
+        this.toggleUndoRedo();
+    }
+
+    private redo = () => {
+        let lastClickX = this.clickXRedo.pop();
+        let lastClickY = this.clickYRedo.pop();
+        let lastClickDrag = this.clickDragRedo.pop();
+        let lastColor = this.colorRedo.pop();
+        let lastDrawingMode = this.drawingModeRedo.pop();
+        let lastBrushSize = this.brushSizeRedo.pop();
+
+        if (lastClickX != undefined){
+            this.clickX = this.clickX.concat(lastClickX);
+            this.clickY = this.clickY.concat(lastClickY);
+            this.clickDrag = this.clickDrag.concat(lastClickDrag);
+            this.color = this.color.concat(lastColor);
+            this.drawingMode = this.drawingMode.concat(lastDrawingMode);
+            this.brushSize = this.brushSize.concat(lastBrushSize);
+
+            this.addClickHistory(lastClickX, lastClickY,  lastClickDrag, lastColor, lastDrawingMode, lastBrushSize);
+
+            this.redraw();
+        }
+
+        this.toggleUndoRedo();
+    }
+
+    private clearRedo = () => {
+        this.clickXRedo = [];
+        this.clickYRedo = [];
+        this.clickDragRedo = [];
+        this.colorRedo = [];
+        this.drawingModeRedo = [];
+        this.brushSizeRedo = [];
+    }
+
+    private toggleUndoRedo = () => {
+        // redo
+        let redo = document.getElementById("redo");
+        if (this.clickXRedo !== undefined || this.clickXRedo.length != 0){
+            (<HTMLImageElement>document.getElementById("redoimg")).src = "/images/redo.svg";            
+            redo.classList.add("undo-redo-active");
+        }
+        if (this.clickXRedo === undefined || this.clickXRedo.length == 0){
+            (<HTMLImageElement>document.getElementById("redoimg")).src = "/images/redo-inactive.svg";
+            redo.classList.remove("undo-redo-active");
+        }
+
+        // undo
+        let undo = document.getElementById("undo");
+        if (this.clickXHistory !== undefined || this.clickXHistory.length != 0){
+            (<HTMLImageElement>document.getElementById("undoimg")).src = "/images/undo.svg";
+            undo.classList.add("undo-redo-active");
+        }
+        if (this.clickXHistory === undefined || this.clickXHistory.length == 0){
+            (<HTMLImageElement>document.getElementById("undoimg")).src = "/images/undo-inactive.svg";
+            undo.classList.remove("undo-redo-active");
+        }        
     }
 }
 

@@ -63,6 +63,15 @@ button{
     padding-top: 3px;
 }
 
+.undo-redo-active:active{
+    background: #EFEFEF !important;
+    box-shadow: inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5);
+}
+
+.undo-redo-active:hover{
+    background: #FFFFFF;
+}
+
 /* ========================== Sidebar ========================== */
 
 .canvas-sidebar{
