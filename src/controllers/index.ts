@@ -299,7 +299,44 @@ export class DrawingApp{
         if (this.clickXHistory === undefined || this.clickXHistory.length == 0){
             (<HTMLImageElement>document.getElementById("undoimg")).src = "/images/undo-inactive.svg";
             undo.classList.remove("undo-redo-active");
-        }        
+        }
+        
+        // hover
+        // redo.addEventListener('mouseover', () => {
+        //     if (this.clickXRedo !== undefined || this.clickXRedo.length != 0){
+        //         redo.classList.remove("unpressed");
+        //         redo.classList.remove("hovering-pressed");
+        //         redo.classList.add("hovering-unpressed");
+        //         (<HTMLImageElement>document.getElementById("redoimg")).src = "/images/redo-hover.svg";
+        //     }
+        //     else{
+        //         (<HTMLImageElement>document.getElementById("redoimg")).src = "/images/redo-inactive.svg";
+        //     }
+        // });
+
+        // redo.addEventListener('mouseout', () => {
+        //     if (this.clickXRedo !== undefined || this.clickXRedo.length != 0){
+        //         redo.classList.remove("hovering-unpressed");
+        //         redo.classList.remove("hovering-pressed");
+        //         redo.classList.add("unpressed");
+        //     }
+        // });
+
+        // redo.addEventListener('mousedown', () => {
+        //     if (this.clickXRedo !== undefined || this.clickXRedo.length != 0){
+        //         redo.classList.remove("unpressed");
+        //         redo.classList.remove("hovering-unpressed");
+        //         redo.classList.add("hovering-pressed");
+        //     }
+        // });
+
+        // redo.addEventListener('mouseup', () => {
+        //     if (this.clickXRedo !== undefined || this.clickXRedo.length != 0){
+        //         redo.classList.remove("unpressed");
+        //         redo.classList.remove("hovering-pressed");
+        //         redo.classList.add("hovering-unpressed");
+        //     }
+        // });
     }
 }
 

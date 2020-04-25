@@ -100,8 +100,6 @@ button{
 .side-buttons{
     width: 35px;
     height: 35px;
-    background: #EFEFEF;
-    box-shadow: -3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5);
     border-radius: 5px;
     margin-top: 12px;
     margin-bottom: 12px;
@@ -122,6 +120,20 @@ button{
 .pressed{
     background: #EFEFEF;
     box-shadow: inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5);
+}
+
+.unpressed{
+    background: #EFEFEF;
+    box-shadow: -3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5);
+}
+
+.hovering-unpressed{
+    background: #6C6C6C;
+}
+
+.hovering-pressed{
+    background: #6C6C6C;
+    box-shadow: inset 3px 3px 8px #474747, inset -3px -3px 8px rgba(165, 165, 165, 0.5);
 }
 
 #color-dot{

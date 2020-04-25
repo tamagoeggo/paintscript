@@ -316,6 +316,39 @@ var DrawingApp = /** @class */ (function () {
                 document.getElementById("undoimg").src = "/images/undo-inactive.svg";
                 undo.classList.remove("undo-redo-active");
             }
+            // hover
+            // redo.addEventListener('mouseover', () => {
+            //     if (this.clickXRedo !== undefined || this.clickXRedo.length != 0){
+            //         redo.classList.remove("unpressed");
+            //         redo.classList.remove("hovering-pressed");
+            //         redo.classList.add("hovering-unpressed");
+            //         (<HTMLImageElement>document.getElementById("redoimg")).src = "/images/redo-hover.svg";
+            //     }
+            //     else{
+            //         (<HTMLImageElement>document.getElementById("redoimg")).src = "/images/redo-inactive.svg";
+            //     }
+            // });
+            // redo.addEventListener('mouseout', () => {
+            //     if (this.clickXRedo !== undefined || this.clickXRedo.length != 0){
+            //         redo.classList.remove("hovering-unpressed");
+            //         redo.classList.remove("hovering-pressed");
+            //         redo.classList.add("unpressed");
+            //     }
+            // });
+            // redo.addEventListener('mousedown', () => {
+            //     if (this.clickXRedo !== undefined || this.clickXRedo.length != 0){
+            //         redo.classList.remove("unpressed");
+            //         redo.classList.remove("hovering-unpressed");
+            //         redo.classList.add("hovering-pressed");
+            //     }
+            // });
+            // redo.addEventListener('mouseup', () => {
+            //     if (this.clickXRedo !== undefined || this.clickXRedo.length != 0){
+            //         redo.classList.remove("unpressed");
+            //         redo.classList.remove("hovering-pressed");
+            //         redo.classList.add("hovering-unpressed");
+            //     }
+            // });
         };
         this.eraser = new eraser_js_1.Eraser();
         this.paintbrush = new paintbrush_js_1.Paintbrush();
@@ -473,8 +506,8 @@ function closeWindows() {
     }
     var pressedButtons = document.getElementsByClassName('side-buttons');
     for (var i = 0; i < pressedButtons.length; i++) {
-        pressedButtons[i].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
         pressedButtons[i].classList.remove("pressed");
+        pressedButtons[i].classList.add("unpressed");
     }
 }
 exports.closeWindows = closeWindows;
@@ -482,66 +515,33 @@ exports.closeWindows = closeWindows;
 var sideButtons = document.getElementsByClassName('side-buttons');
 var windowId = '';
 var _loop_1 = function (i) {
-    sideButtons[i].addEventListener('mousedown', function () {
-        var clickedButton = sideButtons[i];
-        clickedButton.classList.add("pressed");
-        if (clickedButton.id == 'color-button') {
-            windowId = 'colourwindow';
-        }
-        else if (clickedButton.id == 'paintbrush-button') {
-            windowId = 'brushwindow';
-        }
-        else if (clickedButton.id == 'eraser-button') {
-            windowId = 'eraserwindow';
-        }
-        else {
-            windowId = '';
-        }
-        var selectedWindow = document.getElementById(windowId);
-        // close if opened
-        if (selectedWindow.style.display !== 'none') {
-            selectedWindow.style.display = 'none';
-            document.getElementById(clickedButton.id).style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-            clickedButton.classList.remove("pressed");
-        }
-        // open if closed
-        else {
-            var openWindows = document.getElementsByClassName("side-window");
-            for (var i_1 = 0; i_1 < openWindows.length; i_1++) {
-                openWindows[i_1].style.display = 'none';
-            }
-            var pressedButtons = document.getElementsByClassName('side-buttons');
-            for (var i_2 = 0; i_2 < pressedButtons.length; i_2++) {
-                pressedButtons[i_2].style.boxShadow = '-3px -3px 8px #FFFFFF, 3px 3px 8px rgba(201, 201, 201, 0.5)';
-                pressedButtons[i_2].classList.remove("pressed");
-            }
-            selectedWindow.style.display = 'block';
-            document.getElementById(clickedButton.id).style.boxShadow = 'inset 3px 3px 8px #474747, inset -3px -3px 8px rgba(165, 165, 165, 0.5)';
-            clickedButton.classList.add("pressed");
-        }
-    });
-    sideButtons[i].addEventListener('mouseup', function () {
-        var clickedButton = sideButtons[i];
-        if (clickedButton.classList.contains('pressed')) {
-            clickedButton.style.boxShadow = "inset 3px 3px 8px #474747, inset -3px -3px 8px rgba(165, 165, 165, 0.5)";
-        }
-    });
     sideButtons[i].addEventListener('mouseover', function () {
         var hoverButton = sideButtons[i];
-        hoverButton.style.background = "#6C6C6C";
+        if (hoverButton.classList.contains('pressed')) {
+            hoverButton.classList.remove("pressed");
+            hoverButton.classList.add("hovering-pressed");
+        }
+        else if (hoverButton.classList.contains('unpressed')) {
+            hoverButton.classList.remove("unpressed");
+            hoverButton.classList.add("hovering-unpressed");
+        }
         if (hoverButton.id == 'paintbrush-button') {
             document.getElementById("paintbrush").src = "/images/paintbrush-button-hover.svg";
         }
         else if (hoverButton.id == 'eraser-button') {
             document.getElementById("eraser").src = "/images/eraser-button-hover.svg";
         }
-        if (hoverButton.classList.contains('pressed')) {
-            hoverButton.style.boxShadow = "inset 3px 3px 8px #474747, inset -3px -3px 8px rgba(165, 165, 165, 0.5)";
-        }
     });
     sideButtons[i].addEventListener('mouseout', function () {
         var button = sideButtons[i];
-        button.style.background = "#EFEFEF";
+        if (button.classList.contains('hovering-pressed')) {
+            button.classList.remove("hovering-pressed");
+            button.classList.add("pressed");
+        }
+        else if (button.classList.contains('hovering-unpressed')) {
+            button.classList.remove("hovering-unpressed");
+            button.classList.add("unpressed");
+        }
         if (button.id == 'paintbrush-button') {
             var paintbrush = document.getElementById("paintbrush");
             if (paintbrush.classList.contains('active')) {
@@ -560,15 +560,53 @@ var _loop_1 = function (i) {
                 eraser.src = "/images/eraser-button.svg";
             }
         }
-        if (button.classList.contains('pressed')) {
-            button.style.boxShadow = "inset 3px 3px 8px #DADADA, inset -3px -3px 8px rgba(255, 255, 255, 0.5)";
+    });
+    sideButtons[i].addEventListener('click', function () {
+        var clickedButton = sideButtons[i];
+        if (clickedButton.id == 'color-button') {
+            windowId = 'colourwindow';
+        }
+        else if (clickedButton.id == 'paintbrush-button') {
+            windowId = 'brushwindow';
+        }
+        else if (clickedButton.id == 'eraser-button') {
+            windowId = 'eraserwindow';
+        }
+        else {
+            windowId = '';
+        }
+        var selectedWindow = document.getElementById(windowId);
+        // if window is open, close it when button is clicked
+        if (selectedWindow.style.display !== 'none') {
+            selectedWindow.style.display = 'none';
+            clickedButton.classList.remove("unpressed");
+            clickedButton.classList.remove("pressed");
+            clickedButton.classList.remove("hovering-pressed");
+            clickedButton.classList.add("hovering-unpressed");
+        }
+        // if window is closed, open it when button is clicked
+        else {
+            var allWindows = document.getElementsByClassName("side-window");
+            for (var i_1 = 0; i_1 < allWindows.length; i_1++) {
+                allWindows[i_1].style.display = 'none';
+            }
+            for (var i_2 = 0; i_2 < sideButtons.length; i_2++) {
+                sideButtons[i_2].classList.remove("hovering-unpressed");
+                sideButtons[i_2].classList.remove("hovering-pressed");
+                sideButtons[i_2].classList.remove("pressed");
+                sideButtons[i_2].classList.add("unpressed");
+            }
+            selectedWindow.style.display = 'block';
+            clickedButton.classList.remove("pressed");
+            clickedButton.classList.remove("unpressed");
+            clickedButton.classList.remove("hovering-unpressed");
+            clickedButton.classList.add("hovering-pressed");
         }
     });
 };
 for (var i = 0; i < sideButtons.length; i++) {
     _loop_1(i);
 }
-// side button hover
 
 },{}],7:[function(require,module,exports){
 'use strict';
