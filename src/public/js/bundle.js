@@ -1,5 +1,37 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var colors = __importStar(require("../colors.js"));
+var colorwheel_js_1 = require("../colorwheel.js");
+function normalBrush(context, clickX, clickY, clickDrag, color, drawingMode, brushSize) {
+    context.moveTo(clickX[0], clickY[0]);
+    for (var i = 0; i < clickX.length - 2; ++i) {
+        context.beginPath();
+        context.strokeStyle = color[i];
+        context.globalCompositeOperation = drawingMode[i];
+        context.lineWidth = brushSize[i];
+        var xc = (clickX[i] + clickX[i + 1]) / 2;
+        var yc = (clickY[i] + clickY[i + 1]) / 2;
+        context.quadraticCurveTo(clickX[i], clickY[i], xc, yc);
+    }
+    context.quadraticCurveTo(clickX[clickX.length - 2], clickY[clickY.length - 2], clickX[clickX.length - 1], clickY[clickY.length - 1]);
+    context.stroke();
+    context.closePath();
+    if (colors.usedColors.indexOf(colorwheel_js_1.colorWheel.hex) == -1) {
+        colors.usedColors.unshift(colorwheel_js_1.colorWheel.hex);
+    }
+}
+exports.normalBrush = normalBrush;
+
+},{"../colors.js":2,"../colorwheel.js":3}],2:[function(require,module,exports){
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var colorwheel_js_1 = require("./colorwheel.js");
 exports.usedColors = [];
@@ -43,7 +75,7 @@ function getColorFromHistory() {
 }
 exports.getColorFromHistory = getColorFromHistory;
 
-},{"./colorwheel.js":2}],2:[function(require,module,exports){
+},{"./colorwheel.js":3}],3:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -73,7 +105,7 @@ exports.colorWheel = new reinvented_color_wheel_1.default({
     },
 });
 
-},{"reinvented-color-wheel":13,"reinvented-color-wheel/css/reinvented-color-wheel.min.css":14}],3:[function(require,module,exports){
+},{"reinvented-color-wheel":14,"reinvented-color-wheel/css/reinvented-color-wheel.min.css":15}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_js_1 = require("./index.js");
@@ -132,7 +164,7 @@ var Eraser = /** @class */ (function () {
 }());
 exports.Eraser = Eraser;
 
-},{"./index.js":4}],4:[function(require,module,exports){
+},{"./index.js":5}],5:[function(require,module,exports){
 "use strict";
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
@@ -147,6 +179,7 @@ var colors = __importStar(require("./colors.js"));
 var eraser_js_1 = require("./eraser.js");
 var paintbrush_js_1 = require("./paintbrush.js");
 var windows = __importStar(require("./window.js"));
+var normalbrush_js_1 = require("./brushes/normalbrush.js");
 var DrawingApp = /** @class */ (function () {
     function DrawingApp() {
         var _this = this;
@@ -386,31 +419,35 @@ var DrawingApp = /** @class */ (function () {
     DrawingApp.prototype.redraw = function () {
         var context = this.context;
         var clickX = this.clickX;
-        var clickDrag = this.clickDrag;
         var clickY = this.clickY;
+        var clickDrag = this.clickDrag;
         var color = this.color;
         var drawingMode = this.drawingMode;
         var brushSize = this.brushSize;
-        //console.log(brushSize);
-        for (var i = 0; i < clickX.length; ++i) {
-            context.beginPath();
-            context.strokeStyle = color[i];
-            context.globalCompositeOperation = drawingMode[i];
-            context.lineWidth = brushSize[i];
-            if (clickDrag[i] && i) {
-                context.moveTo(clickX[i - 1], clickY[i - 1]);
-            }
-            else {
-                context.moveTo(clickX[i] - 1, clickY[i]);
-            }
-            context.lineTo(clickX[i], clickY[i]);
-            context.stroke();
+        var brushType = this.paintbrush.getBrush;
+        if (brushType == "normalbrush") {
+            normalbrush_js_1.normalBrush(context, clickX, clickY, clickDrag, color, drawingMode, brushSize);
         }
-        if (colors.usedColors.indexOf(colorwheel_js_1.colorWheel.hex) == -1) {
-            colors.usedColors.unshift(colorwheel_js_1.colorWheel.hex);
-            // console.log("usedColors:", colors.usedColors);
+        else {
+            for (var i = 0; i < clickX.length; ++i) {
+                context.beginPath();
+                context.strokeStyle = color[i];
+                context.globalCompositeOperation = drawingMode[i];
+                context.lineWidth = brushSize[i];
+                if (clickDrag[i] && i) {
+                    context.moveTo(clickX[i - 1], clickY[i - 1]);
+                }
+                else {
+                    context.moveTo(clickX[i] - 1, clickY[i]);
+                }
+                context.lineTo(clickX[i], clickY[i]);
+                context.stroke();
+            }
+            if (colors.usedColors.indexOf(colorwheel_js_1.colorWheel.hex) == -1) {
+                colors.usedColors.unshift(colorwheel_js_1.colorWheel.hex);
+            }
+            context.closePath();
         }
-        context.closePath();
     };
     DrawingApp.prototype.addClick = function (x, y, dragging, color, mode, size) {
         this.clickX.push(x);
@@ -436,7 +473,7 @@ document.getElementById('eraserwindow').style.display = 'none';
 document.getElementById('brushwindow').style.display = 'none';
 new DrawingApp();
 
-},{"./colors.js":1,"./colorwheel.js":2,"./eraser.js":3,"./paintbrush.js":5,"./window.js":6}],5:[function(require,module,exports){
+},{"./brushes/normalbrush.js":1,"./colors.js":2,"./colorwheel.js":3,"./eraser.js":4,"./paintbrush.js":6,"./window.js":7}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_js_1 = require("./index.js");
@@ -496,7 +533,7 @@ var Paintbrush = /** @class */ (function () {
 }());
 exports.Paintbrush = Paintbrush;
 
-},{"./index.js":4}],6:[function(require,module,exports){
+},{"./index.js":5}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function closeWindows() {
@@ -608,7 +645,7 @@ for (var i = 0; i < sideButtons.length; i++) {
     _loop_1(i);
 }
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 
@@ -685,7 +722,7 @@ module.exports = {
     }
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 function hsl2hsv(hsl) {
   var h = hsl[0],
       s = hsl[1] / 100,
@@ -706,7 +743,7 @@ function hsl2hsv(hsl) {
 }
 
 module.exports = hsl2hsv;
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 function hsv2hsl(hsv) {
   var h = hsv[0],
       s = hsv[1] / 100,
@@ -722,7 +759,7 @@ function hsv2hsl(hsv) {
 }
 
 module.exports = hsv2hsl;
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var clamp = require("../util/clamp");
 
 function componentToHex(c) {
@@ -739,7 +776,7 @@ function rgb2hex(rgb) {
 }
 
 module.exports = rgb2hex;
-},{"../util/clamp":12}],11:[function(require,module,exports){
+},{"../util/clamp":13}],12:[function(require,module,exports){
 function expand(hex) {
   var result = "#";
 
@@ -773,13 +810,13 @@ function hex(hex) {
 }
 
 module.exports = hex;
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 function clamp(val, min, max) {
   return Math.min(Math.max(val, min), max);
 }
 
 module.exports = clamp;
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -1134,6 +1171,6 @@ function createElementWithClass(tagName, className) {
 
 module.exports = ReinventedColorWheel;
 
-},{"pure-color/convert/hsl2hsv":8,"pure-color/convert/hsv2hsl":9,"pure-color/convert/rgb2hex":10,"pure-color/parse/hex":11}],14:[function(require,module,exports){
+},{"pure-color/convert/hsl2hsv":9,"pure-color/convert/hsv2hsl":10,"pure-color/convert/rgb2hex":11,"pure-color/parse/hex":12}],15:[function(require,module,exports){
 var css = ".reinvented-color-wheel,\n.reinvented-color-wheel--hue-handle,\n.reinvented-color-wheel--hue-wheel,\n.reinvented-color-wheel--sv-handle,\n.reinvented-color-wheel--sv-space {\n  touch-action: manipulation;\n  touch-action: none;\n  -webkit-touch-callout: none;\n  -webkit-tap-highlight-color: transparent;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n.reinvented-color-wheel {\n  position: relative;\n  display: inline-block;\n  line-height: 0;\n  border-radius: 50%;\n}\n.reinvented-color-wheel--hue-wheel {\n  border-radius: 50%;\n}\n.reinvented-color-wheel--sv-space {\n  position: absolute;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  margin: auto;\n}\n.reinvented-color-wheel--hue-handle,\n.reinvented-color-wheel--sv-handle {\n  position: absolute;\n  box-sizing: border-box;\n  border-radius: 50%;\n  border: 2px solid #fff;\n  box-shadow: 0 0 0 1px #000 inset;\n}\n.reinvented-color-wheel--hue-handle {\n  pointer-events: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules\\reinvented-color-wheel\\css\\reinvented-color-wheel.min.css" }, { "insertAt": "bottom" })); module.exports = css;
-},{"browserify-css":7}]},{},[4]);
+},{"browserify-css":8}]},{},[5]);

@@ -53,5 +53,4 @@ export class Paintbrush{
         (<HTMLImageElement>document.getElementById("paintbrush")).src = "/images/paintbrush-button-active.svg";
         (<HTMLImageElement>document.getElementById("eraser")).src = "/images/eraser-button.svg";
     }
-
 }

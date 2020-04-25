@@ -12,6 +12,7 @@ var colors = __importStar(require("./colors.js"));
 var eraser_js_1 = require("./eraser.js");
 var paintbrush_js_1 = require("./paintbrush.js");
 var windows = __importStar(require("./window.js"));
+var normalbrush_js_1 = require("./brushes/normalbrush.js");
 var DrawingApp = /** @class */ (function () {
     function DrawingApp() {
         var _this = this;
@@ -251,31 +252,35 @@ var DrawingApp = /** @class */ (function () {
     DrawingApp.prototype.redraw = function () {
         var context = this.context;
         var clickX = this.clickX;
-        var clickDrag = this.clickDrag;
         var clickY = this.clickY;
+        var clickDrag = this.clickDrag;
         var color = this.color;
         var drawingMode = this.drawingMode;
         var brushSize = this.brushSize;
-        //console.log(brushSize);
-        for (var i = 0; i < clickX.length; ++i) {
-            context.beginPath();
-            context.strokeStyle = color[i];
-            context.globalCompositeOperation = drawingMode[i];
-            context.lineWidth = brushSize[i];
-            if (clickDrag[i] && i) {
-                context.moveTo(clickX[i - 1], clickY[i - 1]);
-            }
-            else {
-                context.moveTo(clickX[i] - 1, clickY[i]);
-            }
-            context.lineTo(clickX[i], clickY[i]);
-            context.stroke();
+        var brushType = this.paintbrush.getBrush;
+        if (brushType == "normalbrush") {
+            normalbrush_js_1.normalBrush(context, clickX, clickY, clickDrag, color, drawingMode, brushSize);
         }
-        if (colors.usedColors.indexOf(colorwheel_js_1.colorWheel.hex) == -1) {
-            colors.usedColors.unshift(colorwheel_js_1.colorWheel.hex);
-            // console.log("usedColors:", colors.usedColors);
+        else {
+            for (var i = 0; i < clickX.length; ++i) {
+                context.beginPath();
+                context.strokeStyle = color[i];
+                context.globalCompositeOperation = drawingMode[i];
+                context.lineWidth = brushSize[i];
+                if (clickDrag[i] && i) {
+                    context.moveTo(clickX[i - 1], clickY[i - 1]);
+                }
+                else {
+                    context.moveTo(clickX[i] - 1, clickY[i]);
+                }
+                context.lineTo(clickX[i], clickY[i]);
+                context.stroke();
+            }
+            if (colors.usedColors.indexOf(colorwheel_js_1.colorWheel.hex) == -1) {
+                colors.usedColors.unshift(colorwheel_js_1.colorWheel.hex);
+            }
+            context.closePath();
         }
-        context.closePath();
     };
     DrawingApp.prototype.addClick = function (x, y, dragging, color, mode, size) {
         this.clickX.push(x);

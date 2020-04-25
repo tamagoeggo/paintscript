@@ -3,6 +3,7 @@ import * as colors from "./colors.js";
 import { Eraser } from "./eraser.js";
 import { Paintbrush } from "./paintbrush.js";
 import * as windows from "./window.js";
+import { normalBrush } from "./brushes/normalbrush.js";
 
 export class DrawingApp{
     private canvas: HTMLCanvasElement;
@@ -78,36 +79,40 @@ export class DrawingApp{
     // lets user draw on canvas
     private redraw() {
         let context = this.context;
-        let clickX = this.clickX;        
-        let clickDrag = this.clickDrag;
-        let clickY = this.clickY;
+        let clickX = this.clickX;    
+        let clickY = this.clickY;    
+        let clickDrag = this.clickDrag;        
         let color = this.color;
         let drawingMode = this.drawingMode;
         let brushSize = this.brushSize;
 
-        //console.log(brushSize);
+        let brushType = this.paintbrush.getBrush;
 
-        for (let i = 0; i < clickX.length; ++i) {
-            context.beginPath();
-            context.strokeStyle = color[i];
-            context.globalCompositeOperation = drawingMode[i];
-            context.lineWidth = brushSize[i];
+        if (brushType == "normalbrush"){
+            normalBrush(context, clickX, clickY, clickDrag, color, drawingMode, brushSize);
+        }
+        else {
+            for (let i = 0; i < clickX.length; ++i) {
+                context.beginPath();
+                context.strokeStyle = color[i];
+                context.globalCompositeOperation = drawingMode[i];
+                context.lineWidth = brushSize[i];
 
-            if (clickDrag[i] && i) {
-                context.moveTo(clickX[i - 1], clickY[i - 1]);
-            } else {
-                context.moveTo(clickX[i] - 1, clickY[i]);
+                if (clickDrag[i] && i) {
+                    context.moveTo(clickX[i - 1], clickY[i - 1]);
+                } else {
+                    context.moveTo(clickX[i] - 1, clickY[i]);
+                }
+                context.lineTo(clickX[i], clickY[i]);
+                context.stroke();
             }
-            context.lineTo(clickX[i], clickY[i]);
-            context.stroke();
-        }
 
-        if(colors.usedColors.indexOf(colorWheel.hex) == -1){            
-            colors.usedColors.unshift(colorWheel.hex);
-            // console.log("usedColors:", colors.usedColors);
-        }
+            if(colors.usedColors.indexOf(colorWheel.hex) == -1){            
+                colors.usedColors.unshift(colorWheel.hex);
+            }
 
-        context.closePath();        
+            context.closePath();      
+        }  
     }
 
     private addClick(x: number, y: number,  dragging: boolean, color: string, mode: string, size: number) {
