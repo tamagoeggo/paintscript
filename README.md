@@ -13,10 +13,11 @@
 <img alt="Paintscript" src="https://github.com/tamagoeggo/paintscript/blob/master/src/public/images/mockup.png" />
 
 ## 🎨 Features
-* Color wheel and color history (up to 32 of the most recent colors used) 
+* Color wheel and color history (up to 32 of the most recent colors used)
+* Eraser
+* Brush tip size
+* Undo/redo
 
 ## 🚧 In Progress
-* Eraser
-* Different brush options and brush tip size
+* Different brush options
 * Ability to save
-* Undo/redo
